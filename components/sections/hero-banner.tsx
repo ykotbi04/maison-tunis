@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
@@ -56,22 +57,26 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
               {(primaryCTA || secondaryCTA) && (
                 <div className="flex flex-col sm:flex-row gap-4">
                   {primaryCTA && (
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      className="font-medium tracking-wide"
-                    >
-                      {primaryCTA.label}
-                    </Button>
+                    <Link href={primaryCTA.href}>
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        className="font-medium tracking-wide"
+                      >
+                        {primaryCTA.label}
+                      </Button>
+                    </Link>
                   )}
                   {secondaryCTA && (
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className="font-medium tracking-wide"
-                    >
-                      {secondaryCTA.label}
-                    </Button>
+                    <Link href={secondaryCTA.href}>
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        className="font-medium tracking-wide"
+                      >
+                        {secondaryCTA.label}
+                      </Button>
+                    </Link>
                   )}
                 </div>
               )}

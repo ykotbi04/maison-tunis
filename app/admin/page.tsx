@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 import { Container } from '@/components/layout/container'
 import { Section } from '@/components/layout/section'
 import { Button } from '@/components/ui/button'
@@ -104,9 +105,11 @@ export default function AdminDashboard() {
                 </h1>
                 <p className="text-muted">Welcome back, Admin</p>
               </div>
-              <Button variant="primary" size="lg" className="font-medium">
-                New Product
-              </Button>
+              <Link href="/admin/products/new">
+                <Button variant="primary" size="lg" className="font-medium">
+                  New Product
+                </Button>
+              </Link>
             </div>
           </FadeInUp>
         </Container>
@@ -182,9 +185,11 @@ export default function AdminDashboard() {
                         </table>
                       </div>
                       <div className="px-6 py-4 border-t border-border">
-                        <Button variant="outline" size="sm">
-                          View All Orders
-                        </Button>
+                        <Link href="/admin/orders">
+                          <Button variant="outline" size="sm">
+                            View All Orders
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </FadeInUp>
@@ -198,21 +203,31 @@ export default function AdminDashboard() {
                         Quick Actions
                       </h3>
                       <div className="space-y-2">
-                        <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
-                          Manage Products
-                        </Button>
-                        <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
-                          View Analytics
-                        </Button>
-                        <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
-                          Customer Support
-                        </Button>
-                        <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
-                          Inventory
-                        </Button>
-                        <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
-                          Settings
-                        </Button>
+                        <Link href="/admin/products">
+                          <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
+                            Manage Products
+                          </Button>
+                        </Link>
+                        <Link href="/admin/analytics">
+                          <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
+                            View Analytics
+                          </Button>
+                        </Link>
+                        <Link href="/admin/support">
+                          <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
+                            Customer Support
+                          </Button>
+                        </Link>
+                        <Link href="/admin/inventory">
+                          <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
+                            Inventory
+                          </Button>
+                        </Link>
+                        <Link href="/admin/settings">
+                          <Button variant="secondary" size="md" fullWidth className="justify-start font-medium">
+                            Settings
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </FadeInUp>

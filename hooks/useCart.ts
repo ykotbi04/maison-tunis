@@ -2,12 +2,12 @@ import { useCallback, useEffect } from 'react'
 import { useAuthSession } from '@/hooks/useAuthSession'
 import {
   useCartItems,
+  useCartTotalPrice,
+  useCartTotalItems,
   useAddCartItem,
   useRemoveCartItem,
   useUpdateCartQuantity,
   useClearCart,
-  useGetCartTotalPrice,
-  useGetCartTotalItems,
   useGetCartItemById,
   useHasCartItem,
   useCartStore,
@@ -18,12 +18,12 @@ import { MAX_QUANTITY_PER_ORDER, MIN_QUANTITY_PER_ORDER } from '@/lib/constants'
 
 export function useCart() {
   const items = useCartItems()
+  const totalPrice = useCartTotalPrice()
+  const totalItems = useCartTotalItems()
   const addItem = useAddCartItem()
   const removeItem = useRemoveCartItem()
   const updateQuantity = useUpdateCartQuantity()
   const clearCart = useClearCart()
-  const getTotalPrice = useGetCartTotalPrice()
-  const getTotalItems = useGetCartTotalItems()
   const getItemById = useGetCartItemById()
   const hasItem = useHasCartItem()
   const { isAuthenticated } = useAuthSession()
@@ -137,8 +137,8 @@ export function useCart() {
     clearCart: clearCartFn,
     isInCart,
     getItemQuantity,
-    totalPrice: getTotalPrice(),
-    totalItems: getTotalItems(),
+    totalPrice,
+    totalItems,
     syncCartFromServer,
   }
 }

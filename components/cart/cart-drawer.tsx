@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { useCart } from '@/hooks/useCart'
 import { useCartDrawerOpen, useSetCartDrawerOpen } from '@/lib/stores'
 import { cn } from '@/lib/utils'
@@ -161,17 +162,21 @@ const CartDrawer = React.forwardRef<HTMLDivElement, CartDrawerProps>(
               </div>
 
               {/* Buttons */}
-              <Button variant="primary" size="lg" fullWidth className="font-medium">
-                Checkout
-              </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                fullWidth
-                className="font-medium"
-              >
-                Continue Shopping
-              </Button>
+              <Link href="/checkout">
+                <Button variant="primary" size="lg" fullWidth className="font-medium">
+                  Checkout
+                </Button>
+              </Link>
+              <Link href="/shop">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  fullWidth
+                  className="font-medium"
+                >
+                  Continue Shopping
+                </Button>
+              </Link>
             </div>
           )}
         </div>

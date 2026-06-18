@@ -1,9 +1,11 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Container } from '@/components/layout/container'
-import { useMobileMenuOpen, useToggleMobileMenu } from '@/lib/stores'
+import { useMobileMenuOpen, useToggleMobileMenu, useToggleCartDrawer } from '@/lib/stores'
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: string
@@ -27,6 +29,8 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
   ({ className, logo = 'MAISON TUNIS', sticky = true, ...props }, ref) => {
     const mobileMenuOpen = useMobileMenuOpen()
     const toggleMobileMenu = useToggleMobileMenu()
+    const toggleCartDrawer = useToggleCartDrawer()
+    const router = useRouter()
 
     const navItems = [
       { label: 'Shop', href: '/shop' },
@@ -51,47 +55,47 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
             <div className="flex items-center justify-between h-20">
               {/* Logo */}
               <div className="flex-shrink-0">
-                <a
+                <Link
                   href="/"
                   className="font-serif text-xl tracking-widest text-foreground hover:text-accent transition-colors duration-200"
                 >
                   {logo}
-                </a>
+                </Link>
               </div>
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center gap-8">
                 {genderMenus.map((menu) => (
                   <div key={menu.basePath} className="relative group">
-                    <a
+                    <Link
                       href={menu.basePath}
                       className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
                     >
                       {menu.label}
-                    </a>
+                    </Link>
                     <div className="absolute left-0 top-full pt-3 hidden group-hover:block min-w-[220px]">
                       <div className="border border-border bg-background py-2">
                         {collectionCategories.map((category) => (
-                          <a
+                          <Link
                             key={`${menu.basePath}-${category.slug}`}
                             href={`${menu.basePath}/${category.slug}`}
                             className="block px-4 py-2 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
                           >
                             {category.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
                   </div>
                 ))}
                 {navItems.map((item) => (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
 
@@ -100,6 +104,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                 {/* Search Icon */}
                 <button
                   aria-label="Search"
+                  onClick={() => router.push('/shop')}
                   className="text-foreground hover:text-accent transition-colors duration-200 p-2"
                 >
                   <svg
@@ -120,6 +125,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                 {/* Cart Icon */}
                 <button
                   aria-label="Cart"
+                  onClick={toggleCartDrawer}
                   className="text-foreground hover:text-accent transition-colors duration-200 p-2 relative"
                 >
                   <svg
@@ -141,6 +147,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                 {/* Account Icon */}
                 <button
                   aria-label="Account"
+                  onClick={() => router.push('/login')}
                   className="text-foreground hover:text-accent transition-colors duration-200 p-2"
                 >
                   <svg
@@ -195,31 +202,31 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
               <div className="md:hidden border-t border-border pb-4">
                 {genderMenus.map((menu) => (
                   <div key={menu.basePath}>
-                    <a
+                    <Link
                       href={menu.basePath}
                       className="block py-3 px-0 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
                     >
                       {menu.label}
-                    </a>
+                    </Link>
                     {collectionCategories.map((category) => (
-                      <a
+                      <Link
                         key={`${menu.basePath}-mobile-${category.slug}`}
                         href={`${menu.basePath}/${category.slug}`}
                         className="block py-2 pl-4 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
                       >
                         {category.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 ))}
                 {navItems.map((item) => (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className="block py-3 px-0 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}

@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Home() {
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
   return (
     <>
       {/* Hero Section - Premium Storytelling */}
@@ -33,9 +36,11 @@ export default function Home() {
                     Discover Collections
                   </Button>
                 </Link>
-                <button className="w-full sm:w-auto px-8 py-3 border border-accent/40 text-foreground hover:border-accent transition-colors font-serif text-base">
-                  Our Heritage
-                </button>
+                <Link href="/about">
+                  <button className="w-full sm:w-auto px-8 py-3 border border-accent/40 text-foreground hover:border-accent transition-colors font-serif text-base">
+                    Our Heritage
+                  </button>
+                </Link>
               </div>
             </div>
 
@@ -125,7 +130,7 @@ export default function Home() {
               </div>
 
               {/* Collection 2 */}
-              <div className="space-y-4">
+              <Link href="/shop" className="space-y-4 group block">
                 <div className="aspect-square bg-background rounded-lg flex items-center justify-center group cursor-pointer">
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/10 to-background group-hover:from-accent/20 transition-all duration-500">
                     <div className="text-6xl text-accent/50">✦</div>
@@ -137,10 +142,10 @@ export default function Home() {
                     Traditional patterns reimagined for the modern wardrobe
                   </p>
                 </div>
-              </div>
+              </Link>
 
               {/* Collection 3 */}
-              <div className="space-y-4">
+              <Link href="/shop" className="space-y-4 group block">
                 <div className="aspect-square bg-background rounded-lg flex items-center justify-center group cursor-pointer">
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/10 to-background group-hover:from-accent/20 transition-all duration-500">
                     <div className="text-6xl text-accent/50">✦</div>
@@ -152,7 +157,7 @@ export default function Home() {
                     Sophisticated pieces for special occasions and gatherings
                   </p>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </Container>
@@ -181,7 +186,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <Link href="#" className="inline-block pt-4">
+              <Link href="/about" className="inline-block pt-4">
                 <button className="text-accent hover:text-accent-light transition-colors text-sm font-serif tracking-wider">
                   Read Full Story →
                 </button>
@@ -212,15 +217,26 @@ export default function Home() {
               </p>
             </div>
 
-            <form className="flex gap-4 flex-col sm:flex-row max-w-md mx-auto">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (email) {
+                  setSubscribed(true)
+                  setEmail('')
+                }
+              }}
+              className="flex gap-4 flex-col sm:flex-row max-w-md mx-auto"
+            >
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
                 className="flex-1 px-4 py-3 bg-background border border-accent/30 text-foreground placeholder-foreground-muted focus:outline-none focus:border-accent transition-colors font-sans text-sm"
                 required
               />
               <Button className="px-8 py-3 bg-accent hover:bg-accent-dark text-accent-foreground font-serif text-base">
-                Subscribe
+                {subscribed ? 'Subscribed!' : 'Subscribe'}
               </Button>
             </form>
 
