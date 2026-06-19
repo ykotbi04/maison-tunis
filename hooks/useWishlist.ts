@@ -111,7 +111,7 @@ export function useWishlist() {
     [hasItem]
   )
 
-  const clearWishlistFn = useCallback(async () => {
+  const clearWishlistFn = useCallback(() => {
     clearWishlist()
   }, [clearWishlist])
 

@@ -30,7 +30,7 @@ export function handleApiError(error: unknown) {
       return apiError(error.message, 400)
     }
 
-    console.error(error)
+    if (process.env.NODE_ENV !== 'production') console.error(error)
     return apiError('Internal server error', 500)
   }
 

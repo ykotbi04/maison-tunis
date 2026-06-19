@@ -89,7 +89,5 @@ export const useUpdateCartQuantity = () => useCartStore((state) => state.updateQ
 export const useClearCart = () => useCartStore((state) => state.clearCart)
 
 // Individual selector functions to avoid infinite loop
-export const useGetCartTotalPrice = () => useCartStore((state) => state.getTotalPrice)
-export const useGetCartTotalItems = () => useCartStore((state) => state.getTotalItems)
 export const useGetCartItemById = () => useCartStore((state) => state.getItemById)
 export const useHasCartItem = () => useCartStore((state) => state.hasItem)

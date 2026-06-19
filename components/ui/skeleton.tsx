@@ -44,32 +44,4 @@ export function ProductDetailSkeleton() {
   )
 }
 
-export function CartItemSkeleton() {
-  return (
-    <div className="flex gap-4 pb-4 border-b border-border">
-      <Skeleton className="w-20 h-20 rounded" />
-      <div className="flex-1 space-y-3">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-8 w-24" />
-      </div>
-    </div>
-  )
-}
 
-export function OrderSummarySkeleton() {
-  return (
-    <div className="space-y-4">
-      <Skeleton className="h-8 w-1/3" />
-      <div className="space-y-3">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="flex justify-between">
-            <Skeleton className="h-4 w-1/2" />
-            <Skeleton className="h-4 w-1/4" />
-          </div>
-        ))}
-      </div>
-      <Skeleton className="h-8 w-full" />
-    </div>
-  )
-}
