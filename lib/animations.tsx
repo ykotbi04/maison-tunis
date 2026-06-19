@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { motion, MotionProps } from 'framer-motion'
-import { motionConfig, prefersReducedMotion } from './motion-system'
+import { prefersReducedMotion } from './motion-system'
 
 // Fade in animation wrapper
 export function FadeIn({

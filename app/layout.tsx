@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import { Navbar } from '@/components/navigation/navbar'
 import { Footer } from '@/components/layout/footer'
+import { CartDrawer } from '@/components/cart/cart-drawer'
 import { AuthSessionProvider } from '@/components/providers/session-provider'
 import './globals.css'
 
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-background text-foreground">
         <AuthSessionProvider>
           <Navbar />
+          <CartDrawer />
           <main>{children}</main>
           <Footer />
         </AuthSessionProvider>

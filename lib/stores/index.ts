@@ -9,8 +9,6 @@ export {
   useRemoveCartItem,
   useUpdateCartQuantity,
   useClearCart,
-  useGetCartTotalPrice,
-  useGetCartTotalItems,
   useGetCartItemById,
   useHasCartItem
 } from './cartStore'

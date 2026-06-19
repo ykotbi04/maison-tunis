@@ -99,6 +99,13 @@ export const checkoutSchema = z.object({
   items: z.array(cartItemSchema).min(1).optional(),
 })
 
+export const contactSchema = z.object({
+  name: z.string().min(1).max(100),
+  email: z.string().email(),
+  subject: z.string().min(1).max(200),
+  message: z.string().min(1).max(5000),
+})
+
 export type RegisterInput = z.infer<typeof registerSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type CartItemInput = z.infer<typeof cartItemSchema>

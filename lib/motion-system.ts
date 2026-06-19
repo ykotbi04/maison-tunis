@@ -100,7 +100,7 @@ export const prefersReducedMotion = () => {
 };
 
 // Safe motion variant that respects user preference
-export const safeMotionVariant = (variant: any, reduced: boolean = prefersReducedMotion()) => {
+export const safeMotionVariant = (variant: Record<string, unknown>, reduced: boolean = prefersReducedMotion()) => {
   if (reduced) {
     return {
       initial: variant.animate,

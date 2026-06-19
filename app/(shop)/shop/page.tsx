@@ -82,7 +82,7 @@ export default function ShopPage() {
                   <label className="text-label">Sort By</label>
                   <select
                     value={filter.sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
+                    onChange={(e) => setSortBy(e.target.value as 'newest' | 'price-low' | 'price-high' | 'rating')}
                     className="w-full px-3 py-2 bg-background border border-border rounded text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
                   >
                     <option value="newest">Newest</option>

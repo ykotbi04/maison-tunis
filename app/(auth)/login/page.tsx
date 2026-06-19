@@ -126,7 +126,7 @@ function LoginForm() {
                   />
                   <span className="text-muted">Remember me</span>
                 </label>
-                <Link href="#" variant="secondary" size="sm">
+                <Link href="/pages/forgot-password" variant="secondary" size="sm">
                   Forgot Password?
                 </Link>
               </div>
