@@ -8,6 +8,7 @@ import { Container } from '@/components/layout/container'
 import { useMobileMenuOpen, useToggleMobileMenu, useToggleCartDrawer } from '@/lib/stores'
 import { useAuthSession } from '@/hooks/useAuthSession'
 import { signOut } from 'next-auth/react'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: string
@@ -103,7 +104,10 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                {/* Theme Toggle */}
+                <ThemeToggle />
+
                 {/* Search Icon */}
                 <button
                   aria-label="Search"

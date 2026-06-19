@@ -5,6 +5,7 @@ import { Navbar } from '@/components/navigation/navbar'
 import { Footer } from '@/components/layout/footer'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 import { AuthSessionProvider } from '@/components/providers/session-provider'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -43,8 +44,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: [{ color: '#0C0A08' }],
+  colorScheme: 'light dark',
+  themeColor: [
+    { color: '#FBF9F6', media: '(prefers-color-scheme: light)' },
+    { color: '#0C0A08', media: '(prefers-color-scheme: dark)' },
+  ],
   userScalable: true,
 }
 
@@ -54,14 +58,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable} bg-background`}>
-      <body className="font-sans antialiased bg-background text-foreground">
-        <AuthSessionProvider>
-          <Navbar />
-          <CartDrawer />
-          <main>{children}</main>
-          <Footer />
-        </AuthSessionProvider>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased">
+        <ThemeProvider>
+          <AuthSessionProvider>
+            <Navbar />
+            <CartDrawer />
+            <main>{children}</main>
+            <Footer />
+          </AuthSessionProvider>
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

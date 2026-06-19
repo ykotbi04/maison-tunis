@@ -6,13 +6,40 @@
 }
 
 @layer base {
+  :root {
+    --bg: #FBF9F6;
+    --bg-secondary: #F5F2ED;
+    --fg: #1A1816;
+    --fg-secondary: #45433E;
+    --fg-muted: #8A8680;
+    --accent: #D8B57F;
+    --accent-hover: #C4A06A;
+    --border: #E5E1DA;
+    --border-light: #EDEAE5;
+    --card: #FFFFFF;
+  }
+
+  .dark {
+    --bg: #0C0A08;
+    --bg-secondary: #14110E;
+    --fg: #F5F0E8;
+    --fg-secondary: #EDE8E0;
+    --fg-muted: #A9A09B;
+    --accent: #D8B57F;
+    --accent-hover: #B8945F;
+    --border: #2A2620;
+    --border-light: #3A3530;
+    --card: #14110E;
+  }
+
   * {
-    border-color: var(--color-border);
+    border-color: var(--border);
   }
 
   body {
-    background-color: #0C0A08;
-    color: #F5F0E8;
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   html {
@@ -20,10 +47,9 @@
     scroll-behavior: smooth;
   }
 
-  /* Typography base styles */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif), 'Cormorant Garamond Fallback';
-    color: #F5F0E8;
+    color: var(--fg);
   }
 
   h1 {
@@ -54,63 +80,44 @@
     letter-spacing: 0em;
   }
 
-  h5 {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.5;
-    letter-spacing: 0em;
-  }
-
-  h6 {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.5;
-    letter-spacing: 0em;
-  }
-
-  /* Paragraph */
   p {
     font-size: 16px;
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: 0em;
-    color: #EDE8E0;
+    color: var(--fg-secondary);
   }
 
-  /* Remove default focus outlines for visible focus states */
   :focus-visible {
-    outline: 2px solid #D8B57F;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
-  /* Scrollbar styling */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #0C0A08;
+    background-color: var(--bg);
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #9D9080;
+    background-color: var(--fg-muted);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #D8B57F;
+    background-color: var(--accent);
   }
 
-  /* Selection color */
   ::selection {
-    background-color: #D8B57F;
+    background-color: var(--accent);
     color: #0C0A08;
   }
 }
 
 @layer utilities {
-  /* Text utilities */
   .text-balance {
     text-wrap: balance;
   }
@@ -119,7 +126,6 @@
     text-wrap: pretty;
   }
 
-  /* Display typography */
   .text-display-1 {
     font-size: 48px;
     font-weight: 700;
@@ -134,7 +140,6 @@
     letter-spacing: -0.01em;
   }
 
-  /* Body typography */
   .text-body-lg {
     font-size: 18px;
     font-weight: 400;
@@ -149,7 +154,6 @@
     letter-spacing: 0em;
   }
 
-  /* Label typography */
   .text-label-lg {
     font-size: 14px;
     font-weight: 500;
@@ -164,38 +168,14 @@
     letter-spacing: 0.05em;
   }
 
-  /* Caption/overline */
-  .text-caption {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1.4;
-    letter-spacing: 0em;
-  }
-
   .text-overline {
     font-size: 11px;
     font-weight: 600;
     line-height: 1.4;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
   }
 
-  /* Price typography */
-  .text-price-lg {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0em;
-  }
-
-  .text-price-sm {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0em;
-  }
-
-  /* Flex utilities */
   .flex-center {
     display: flex;
     align-items: center;
@@ -206,34 +186,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  /* Section Spacing Standardization */
-  .section-py-sm {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  .section-py-md {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-  @media (min-width: 768px) {
-    .section-py-md {
-      padding-top: 5rem;
-      padding-bottom: 5rem;
-    }
-  }
-
-  .section-py-lg {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-  @media (min-width: 768px) {
-    .section-py-lg {
-      padding-top: 6rem;
-      padding-bottom: 6rem;
-    }
   }
 
   .section-py-xl {
@@ -248,65 +200,22 @@
   }
 
   .section-px {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
   @media (min-width: 768px) {
-    .section-px {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-  }
-  @media (min-width: 1024px) {
     .section-px {
       padding-left: 2rem;
       padding-right: 2rem;
     }
   }
-
-  .section-gap {
-    gap: 2rem;
-  }
-  @media (min-width: 768px) {
-    .section-gap {
-      gap: 3rem;
-    }
-  }
   @media (min-width: 1024px) {
-    .section-gap {
-      gap: 4rem;
+    .section-px {
+      padding-left: 4rem;
+      padding-right: 4rem;
     }
   }
 
-  /* Card/Component Spacing */
-  .card-padding {
-    padding: 1.5rem;
-  }
-
-  .card-padding-lg {
-    padding: 2rem;
-  }
-
-  /* Grid Spacing */
-  .grid-gap-default {
-    gap: 1.5rem;
-  }
-  @media (min-width: 768px) {
-    .grid-gap-default {
-      gap: 2rem;
-    }
-  }
-
-  .grid-gap-lg {
-    gap: 2rem;
-  }
-  @media (min-width: 768px) {
-    .grid-gap-lg {
-      gap: 3rem;
-    }
-  }
-
-  /* Animation utilities */
   .animate-shimmer {
     background: linear-gradient(
       90deg,
@@ -318,33 +227,16 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Container queries for responsive design */
-  .container-lg {
-    max-width: 80rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  @media (min-width: 768px) {
-    .container-lg {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
   }
 
-  /* Gradient utilities */
-  .gradient-accent {
-    background: linear-gradient(to right, #D8B57F, #B8945F);
-  }
-
-  /* Luxury divider */
   .divider-luxury {
     height: 1px;
-    background: linear-gradient(to right, transparent, #2A2620, transparent);
+    background: linear-gradient(to right, transparent, var(--border), transparent);
   }
 
-  /* Accessibility */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -357,7 +249,6 @@
     border-width: 0;
   }
 
-  /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
