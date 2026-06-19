@@ -53,9 +53,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const relatedProducts = await getRelatedProducts(product.categorySlug, product.id, 3)
 
   return (
-    <main className="bg-background">
+    <main style={{ backgroundColor: 'var(--bg)', color: 'var(--fg)' }}>
       {/* Breadcrumbs */}
-      <section className="border-b border-border">
+      <section style={{ borderBottom: '1px solid var(--border)' }}>
         <Container>
           <div className="py-4">
             <Breadcrumbs
@@ -78,12 +78,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
 
       {/* Related Products Section */}
-      <section className="border-t border-border py-12 md:py-20 bg-background-secondary">
+      <section className="py-12 md:py-20" style={{ borderTop: '1px solid var(--border)', backgroundColor: 'var(--bg-secondary)' }}>
         <Container>
           <div className="space-y-8">
             <div>
-              <h2 className="text-display-2">You May Also Like</h2>
-              <p className="text-body text-foreground-muted mt-2">
+              <h2 className="text-display-2" style={{ color: 'var(--fg)' }}>You May Also Like</h2>
+              <p className="text-body mt-2" style={{ color: 'var(--fg-muted)' }}>
                 Other beautiful pieces from our collection
               </p>
             </div>
@@ -99,12 +99,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[1, 2, 3].map((idx) => (
-                  <div key={idx} className="bg-background rounded-lg p-6 space-y-4">
-                    <div className="aspect-square bg-background-secondary rounded flex items-center justify-center">
-                      <div className="text-5xl text-accent/30">✦</div>
+                  <div key={idx} className="p-6 space-y-4" style={{ backgroundColor: 'var(--bg)' }}>
+                    <div className="aspect-square flex items-center justify-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                      <div className="text-5xl" style={{ color: 'var(--accent)', opacity: 0.3 }}>✦</div>
                     </div>
-                    <h3 className="text-heading-3">Related Product {idx}</h3>
-                    <p className="text-muted text-sm">Premium piece from MAISON TUNIS</p>
+                    <h3 className="text-heading-3" style={{ color: 'var(--fg)' }}>Related Product {idx}</h3>
+                    <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Premium piece from MAISON TUNIS</p>
                   </div>
                 ))}
               </div>

@@ -35,7 +35,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
     )
   }
 
-  // Intersection Observer to show/hide sticky button
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -53,16 +52,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
     }
   }, [])
 
-  const discountedPrice = product.isLimited
-    ? Math.round(product.price * 0.95)
-    : product.price
-
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Image Gallery */}
         <div className="space-y-4">
-          <div className="relative aspect-square bg-background-secondary rounded-lg overflow-hidden">
+          <div className="relative aspect-square overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <Image
               src={product.image}
               alt={product.name}
@@ -71,12 +66,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
               priority
             />
             {product.isNew && (
-              <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-4 py-2 text-sm font-serif">
+              <div className="absolute top-4 left-4 px-4 py-2 text-sm font-sans tracking-widest uppercase" style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}>
                 New
               </div>
             )}
             {product.isLimited && (
-              <div className="absolute top-4 right-4 bg-destructive text-white px-4 py-2 text-sm font-serif">
+              <div className="absolute top-4 right-4 px-4 py-2 text-sm font-sans tracking-widest uppercase" style={{ backgroundColor: '#C9544D', color: '#FEFBF8' }}>
                 Limited #{product.limitedQty}
               </div>
             )}
@@ -85,235 +80,238 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Thumbnail Gallery */}
           <div className="grid grid-cols-4 gap-2">
             {product.images.map((image, idx) => (
-              <div key={idx} className="relative aspect-square rounded cursor-pointer">
+              <div key={idx} className="relative aspect-square cursor-pointer overflow-hidden" style={{ border: '1px solid var(--border)' }}>
                 <Image
                   src={image}
                   alt={`${product.name} view ${idx + 1}`}
                   fill
-                  className="object-cover rounded"
+                  className="object-cover"
                 />
               </div>
             ))}
           </div>
         </div>
 
-      {/* Product Info */}
-      <div className="space-y-6">
-        {/* Breadcrumb */}
-        <Link
-          href={`/categories/${product.categorySlug}`}
-          className="text-label text-accent hover:text-accent-dark transition-colors"
-        >
-          {product.category}
-        </Link>
+        {/* Product Info */}
+        <div className="space-y-6">
+          {/* Category */}
+          <Link
+            href={`/categories/${product.categorySlug}`}
+            className="text-overline hover:opacity-80 transition-opacity"
+            style={{ color: 'var(--accent)' }}
+          >
+            {product.category}
+          </Link>
 
-        {/* Title & Price */}
-        <div className="space-y-3">
-          <h1 className="text-display-1 leading-tight">{product.name}</h1>
+          {/* Title & Price */}
+          <div className="space-y-3">
+            <h1 className="text-display-1 leading-tight" style={{ color: 'var(--fg)' }}>{product.name}</h1>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-baseline gap-2">
-              <span className="text-price-lg text-accent">
+            <div className="flex items-center gap-4">
+              <span className="text-price-lg" style={{ color: 'var(--accent)' }}>
                 {formatTND(product.price)}
               </span>
-              {product.isLimited && (
-                <span className="text-muted line-through">
-                  {formatTND(product.price)}
-                </span>
-              )}
+            </div>
+
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <span
+                    key={i}
+                    style={{ color: i < Math.floor(product.rating) ? 'var(--accent)' : 'var(--fg-muted)' }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <span className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+                ({product.reviews} reviews)
+              </span>
             </div>
           </div>
 
-          {/* Rating */}
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={i < Math.floor(product.rating) ? 'text-accent' : 'text-muted'}
-                >
-                  ★
-                </span>
-              ))}
+          {/* Description */}
+          <p className="text-body leading-relaxed" style={{ color: 'var(--fg-secondary)' }}>
+            {product.longDescription}
+          </p>
+
+          {/* Color Selection */}
+          {product.colors.length > 1 && (
+            <div className="space-y-3">
+              <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Color: {selectedColor}</label>
+              <div className="flex gap-3">
+                {product.colors.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setSelectedColor(color)}
+                    className="px-4 py-2 transition-colors"
+                    style={{
+                      border: `1px solid ${selectedColor === color ? 'var(--accent)' : 'var(--border)'}`,
+                      backgroundColor: selectedColor === color ? 'var(--accent)' + '10' : 'transparent',
+                      color: 'var(--fg)',
+                    }}
+                  >
+                    {color}
+                  </button>
+                ))}
+              </div>
             </div>
-            <span className="text-sm text-muted">
-              ({product.reviews} reviews)
-            </span>
-          </div>
-        </div>
-
-        {/* Description */}
-        <p className="text-body text-foreground-muted leading-relaxed">
-          {product.longDescription}
-        </p>
-
-        {/* Color Selection */}
-        {product.colors.length > 1 && (
-          <div className="space-y-3">
-            <label className="text-label">Color: {selectedColor}</label>
-            <div className="flex gap-3">
-              {product.colors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`px-4 py-2 border-2 transition-colors ${
-                    selectedColor === color
-                      ? 'border-accent bg-accent/10'
-                      : 'border-border hover:border-accent'
-                  }`}
-                >
-                  {color}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Size Selection */}
-        {product.sizes.length > 1 && (
-          <div className="space-y-3">
-            <label className="text-label">Size: {selectedSize}</label>
-            <div className="flex gap-3 flex-wrap">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 border-2 transition-colors ${
-                    selectedSize === size
-                      ? 'border-accent bg-accent/10'
-                      : 'border-border hover:border-accent'
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Quantity */}
-        <div className="space-y-3">
-          <label className="text-label">Quantity</label>
-          <div className="flex items-center gap-3 border border-border rounded-lg p-1 w-fit">
-            <button
-              onClick={decrease}
-              disabled={!canDecrease}
-              className="px-4 py-2 text-lg hover:text-accent disabled:text-muted disabled:cursor-not-allowed transition-colors"
-              aria-label="Decrease quantity"
-              title="Decrease quantity (or use arrow left)"
-            >
-              −
-            </button>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantityValue(parseInt(e.target.value) || 1)}
-              min="1"
-              max="20"
-              className="w-12 text-center text-foreground bg-transparent border-0 focus:outline-none"
-              aria-label="Quantity"
-            />
-            <button
-              onClick={increase}
-              disabled={!canIncrease}
-              className="px-4 py-2 text-lg hover:text-accent disabled:text-muted disabled:cursor-not-allowed transition-colors"
-              aria-label="Increase quantity"
-              title="Increase quantity (or use arrow right)"
-            >
-              +
-            </button>
-          </div>
-          <p className="text-xs text-muted">Maximum 20 per order</p>
-        </div>
-
-        {/* Stock Status */}
-        <div className="p-4 bg-background-secondary rounded">
-          {product.inStock ? (
-            <div className="space-y-2">
-              <p className="text-success text-sm font-medium">✓ In Stock</p>
-              <p className="text-label text-foreground-muted text-xs">
-                Ships next business day
-              </p>
-            </div>
-          ) : (
-            <p className="text-error text-sm font-medium">Out of Stock</p>
           )}
-        </div>
 
-        {/* Trust Signals */}
-        {product.inStock && (
-          <div className="space-y-3 p-4 bg-accent/5 rounded border border-accent/20">
-            <div className="flex items-start gap-3">
-              <span className="text-accent text-lg">🚚</span>
-              <div>
-                <p className="text-label text-sm">Free Shipping</p>
-                <p className="text-xs text-foreground-muted">On orders over 100 TND</p>
+          {/* Size Selection */}
+          {product.sizes.length > 1 && (
+            <div className="space-y-3">
+              <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Size: {selectedSize}</label>
+              <div className="flex gap-3 flex-wrap">
+                {product.sizes.map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className="px-4 py-2 transition-colors"
+                    style={{
+                      border: `1px solid ${selectedSize === size ? 'var(--accent)' : 'var(--border)'}`,
+                      backgroundColor: selectedSize === size ? 'var(--accent)' + '10' : 'transparent',
+                      color: 'var(--fg)',
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <span className="text-accent text-lg">↩️</span>
-              <div>
-                <p className="text-label text-sm">Free Returns</p>
-                <p className="text-xs text-foreground-muted">30-day money-back guarantee</p>
-              </div>
+          )}
+
+          {/* Quantity */}
+          <div className="space-y-3">
+            <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Quantity</label>
+            <div className="flex items-center gap-3 w-fit" style={{ border: '1px solid var(--border)' }}>
+              <button
+                onClick={decrease}
+                disabled={!canDecrease}
+                className="px-4 py-2 text-lg hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
+                style={{ color: 'var(--fg)' }}
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantityValue(parseInt(e.target.value) || 1)}
+                min="1"
+                max="20"
+                className="w-12 text-center bg-transparent border-0 focus:outline-none"
+                style={{ color: 'var(--fg)' }}
+                aria-label="Quantity"
+              />
+              <button
+                onClick={increase}
+                disabled={!canIncrease}
+                className="px-4 py-2 text-lg hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
+                style={{ color: 'var(--fg)' }}
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
             </div>
-            <div className="flex items-start gap-3">
-              <span className="text-accent text-lg">✓</span>
-              <div>
-                <p className="text-label text-sm">Authentic & Certified</p>
-                <p className="text-xs text-foreground-muted">100% Tunisian craftsmanship</p>
-              </div>
-            </div>
+            <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>Maximum 20 per order</p>
           </div>
-        )}
 
-        {/* Add to Cart Button */}
-        <Button
-          ref={ctaButtonRef}
-          onClick={handleAddToCart}
-          disabled={!product.inStock}
-          className="w-full py-4 bg-accent hover:bg-accent-dark text-accent-foreground font-serif text-lg"
-        >
-          Add to Cart
-        </Button>
-
-        {/* Product Details */}
-        <div className="border-t border-border pt-6 space-y-3">
-          <h3 className="text-heading-3">Product Details</h3>
-
-          <div className="space-y-2 text-sm">
-            <div>
-              <span className="text-label">Material:</span>
-              <p className="text-foreground-muted">{product.material}</p>
-            </div>
-            <div>
-              <span className="text-label">Care Instructions:</span>
-              <p className="text-foreground-muted">{product.care}</p>
-            </div>
-            {product.heritage && (
-              <div>
-                <span className="text-label">Heritage:</span>
-                <p className="text-foreground-muted">{product.heritage}</p>
+          {/* Stock Status */}
+          <div className="p-4" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+            {product.inStock ? (
+              <div className="space-y-1">
+                <p className="text-sm font-medium" style={{ color: '#6B9E7F' }}>✓ In Stock</p>
+                <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>
+                  Ships next business day
+                </p>
               </div>
+            ) : (
+              <p className="text-sm font-medium" style={{ color: '#C9544D' }}>Out of Stock</p>
             )}
-            <div>
-              <span className="text-label">SKU:</span>
-              <p className="text-foreground-muted">{product.sku}</p>
+          </div>
+
+          {/* Trust Signals */}
+          {product.inStock && (
+            <div className="space-y-3 p-4" style={{ border: '1px solid var(--border)' }}>
+              <div className="flex items-start gap-3">
+                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <div>
+                  <p className="text-sm" style={{ color: 'var(--fg)' }}>Complimentary Global Shipping</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <div>
+                  <p className="text-sm" style={{ color: 'var(--fg)' }}>30-Day Returns</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <div>
+                  <p className="text-sm" style={{ color: 'var(--fg)' }}>Authenticity Certificate Included</p>
+                </div>
+              </div>
             </div>
+          )}
+
+          {/* Add to Cart Button */}
+          <Button
+            ref={ctaButtonRef}
+            onClick={handleAddToCart}
+            disabled={!product.inStock}
+            className="w-full py-4 font-serif text-lg"
+            style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+          >
+            Add to Atelier Bag
+          </Button>
+
+          {/* Product Details - Expandable Sections */}
+          <div style={{ borderTop: '1px solid var(--border)' }} className="pt-6 space-y-4">
+            <details className="group">
+              <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+                Material &amp; Care
+                <span className="transition-transform group-open:rotate-45">+</span>
+              </summary>
+              <div className="pb-4 space-y-2 text-body-sm" style={{ color: 'var(--fg-secondary)' }}>
+                <p><strong>Material:</strong> {product.material}</p>
+                <p><strong>Care:</strong> {product.care}</p>
+              </div>
+            </details>
+
+            {product.heritage && (
+              <details className="group">
+                <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+                  Heritage &amp; Craftsmanship
+                  <span className="transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <div className="pb-4 text-body-sm" style={{ color: 'var(--fg-secondary)' }}>
+                  <p>{product.heritage}</p>
+                </div>
+              </details>
+            )}
+
+            <details className="group">
+              <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+                SKU: {product.sku}
+                <span className="transition-transform group-open:rotate-45">+</span>
+              </summary>
+            </details>
           </div>
         </div>
       </div>
-    </div>
 
       {/* Sticky Footer CTA - Mobile Only */}
       {showStickyButton && (
-        <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-background border-t border-border p-4 z-40 shadow-lg">
+        <div className="fixed bottom-0 left-0 right-0 lg:hidden p-4 z-40" style={{ backgroundColor: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
           <Button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full py-4 bg-accent hover:bg-accent-dark text-accent-foreground font-serif text-lg disabled:opacity-50"
+            className="w-full py-4 font-serif text-lg disabled:opacity-50"
+            style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
           >
-            {product.inStock ? `Add to Cart • ${formatTND(product.price)}` : 'Out of Stock'}
+            {product.inStock ? `Add to Bag • ${formatTND(product.price)}` : 'Out of Stock'}
           </Button>
         </div>
       )}
