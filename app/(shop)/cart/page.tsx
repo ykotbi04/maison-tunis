@@ -1,183 +1,223 @@
 'use client'
 
 import { Container } from '@/components/layout/container'
-import { Section } from '@/components/layout/section'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/hooks/useCart'
-import { FadeInUp } from '@/lib/animations'
 import { formatTND } from '@/lib/formatters'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()
 
   if (items.length === 0) {
     return (
-      <Section variant="default" spacing="xl">
-        <Container>
-          <div className="text-center py-20">
-            <div className="text-6xl text-accent mb-6">◆</div>
-            <h1 className="font-serif text-4xl text-foreground mb-4 tracking-widest">
-              Cart is Empty
-            </h1>
-            <p className="text-muted text-lg mb-8 max-w-md mx-auto">
-              Discover our luxury collections and add your favorite pieces
-            </p>
-            <Link href="/shop">
-              <Button variant="primary" size="lg">
-                Continue Shopping
-              </Button>
-            </Link>
-          </div>
-        </Container>
-      </Section>
+      <main style={{ backgroundColor: 'var(--bg)', color: 'var(--fg)' }}>
+        <section className="py-20 text-center">
+          <Container>
+            <div className="space-y-6">
+              <div className="text-6xl" style={{ color: 'var(--accent)', opacity: 0.3 }}>◆</div>
+              <h1 className="text-display-1" style={{ color: 'var(--fg)' }}>Your Bag is Empty</h1>
+              <p className="text-body max-w-md mx-auto" style={{ color: 'var(--fg-muted)' }}>
+                Discover our luxury collections and add your favorite pieces
+              </p>
+              <Link href="/shop">
+                <Button
+                  className="px-8 py-4 text-overline"
+                  style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+                >
+                  Continue Shopping
+                </Button>
+              </Link>
+            </div>
+          </Container>
+        </section>
+      </main>
     )
   }
 
   return (
-    <>
-      {/* Page Header */}
-      <Section variant="default" spacing="lg">
+    <main style={{ backgroundColor: 'var(--bg)', color: 'var(--fg)' }}>
+      {/* Breadcrumb */}
+      <section style={{ borderBottom: '1px solid var(--border)' }}>
         <Container>
-          <FadeInUp delay={0.1}>
-            <h1 className="font-serif text-5xl md:text-6xl text-foreground tracking-widest">
-              Shopping Cart
-            </h1>
-          </FadeInUp>
+          <div className="py-4">
+            <nav className="flex items-center gap-2 text-overline" style={{ color: 'var(--fg-muted)' }}>
+              <Link href="/" className="hover:opacity-80 transition-opacity">Home</Link>
+              <span>/</span>
+              <span style={{ color: 'var(--fg)' }}>Your Bag</span>
+            </nav>
+          </div>
         </Container>
-      </Section>
+      </section>
+
+      {/* Page Header */}
+      <section className="py-12 md:py-16">
+        <Container>
+          <h1 className="text-display-1" style={{ color: 'var(--fg)' }}>Your Bag</h1>
+        </Container>
+      </section>
 
       {/* Cart Content */}
-      <Section variant="dark" spacing="lg">
+      <section className="pb-16 md:pb-24">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="space-y-6">
-                {items.map((item, idx) => (
-                  <FadeInUp key={item.id} delay={idx * 0.1}>
-                    <div className="bg-background rounded-lg p-6 border border-border flex gap-6">
-                      {/* Image */}
-                      <div className="w-32 h-32 bg-background-secondary rounded flex-shrink-0 flex items-center justify-center">
-                        <span className="text-3xl text-accent">◆</span>
+              <div className="space-y-0">
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex gap-6 py-6"
+                    style={{ borderBottom: '1px solid var(--border)' }}
+                  >
+                    {/* Image */}
+                    <div
+                      className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 flex items-center justify-center overflow-hidden"
+                      style={{ backgroundColor: 'var(--bg-secondary)' }}
+                    >
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={128}
+                          height={128}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-3xl" style={{ color: 'var(--accent)', opacity: 0.3 }}>◆</span>
+                      )}
+                    </div>
+
+                    {/* Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="space-y-1">
+                          <h3 className="text-body-lg font-medium" style={{ color: 'var(--fg)' }}>
+                            {item.name}
+                          </h3>
+                          {(item.color || item.size) && (
+                            <p className="text-body-sm" style={{ color: 'var(--fg-muted)' }}>
+                              {[item.color, item.size].filter(Boolean).join(' / ')}
+                            </p>
+                          )}
+                        </div>
+                        <p className="text-body-lg font-medium" style={{ color: 'var(--fg)' }}>
+                          {formatTND(item.price * item.quantity)}
+                        </p>
                       </div>
 
-                      {/* Details */}
-                      <div className="flex-1">
-                        <h3 className="font-serif text-xl text-foreground mb-2">
-                          {item.name}
-                        </h3>
-                        <p className="text-muted text-sm mb-4">
-                          {formatTND(item.price)} each
-                        </p>
-
+                      <div className="flex items-center justify-between mt-4">
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-center">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-8 h-8 flex items-center justify-center border border-border text-foreground hover:border-accent transition-colors"
+                            className="w-10 h-10 flex items-center justify-center transition-colors"
+                            style={{ border: '1px solid var(--border)', color: 'var(--fg)' }}
                           >
                             −
                           </button>
-                          <span className="w-8 text-center font-medium">{item.quantity}</span>
+                          <span
+                            className="w-12 h-10 flex items-center justify-center text-body-sm"
+                            style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', color: 'var(--fg)' }}
+                          >
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-8 h-8 flex items-center justify-center border border-border text-foreground hover:border-accent transition-colors"
+                            className="w-10 h-10 flex items-center justify-center transition-colors"
+                            style={{ border: '1px solid var(--border)', color: 'var(--fg)' }}
                           >
                             +
                           </button>
                         </div>
 
-                        <p className="text-price text-foreground">
-                          {formatTND(item.price * item.quantity)}
-                        </p>
-                      </div>
-
-                      {/* Remove */}
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-muted hover:text-error transition-colors h-fit"
-                      >
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                        {/* Remove */}
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-overline transition-colors hover:opacity-70"
+                          style={{ color: 'var(--fg-muted)' }}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                  </FadeInUp>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <FadeInUp delay={0.2}>
-                <div className="bg-background rounded-lg p-8 border border-border sticky top-24">
-                  <h2 className="font-serif text-2xl text-foreground mb-6 tracking-wider">
-                    Order Summary
-                  </h2>
+              <div
+                className="p-8 sticky top-24"
+                style={{ border: '1px solid var(--border)' }}
+              >
+                <h2 className="text-heading-2 mb-8" style={{ color: 'var(--fg)' }}>
+                  Summary
+                </h2>
 
-                  <div className="space-y-4 mb-6 pb-6 border-b border-border">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted">Subtotal:</span>
-                      <span className="text-foreground font-medium">{formatTND(totalPrice)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted">Shipping:</span>
-                      <span className="text-foreground font-medium">FREE</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted">Tax:</span>
-                      <span className="text-foreground font-medium">Calculated at checkout</span>
-                    </div>
+                <div className="space-y-4 mb-8 pb-8" style={{ borderBottom: '1px solid var(--border)' }}>
+                  <div className="flex justify-between text-body-sm">
+                    <span style={{ color: 'var(--fg-muted)' }}>Subtotal</span>
+                    <span style={{ color: 'var(--fg)' }}>{formatTND(totalPrice)}</span>
                   </div>
-
-                  <div className="flex justify-between items-baseline mb-6 pb-6 border-b border-border">
-                    <span className="text-foreground font-sans">Total:</span>
-                    <span className="font-serif text-2xl text-accent">
-                      {formatTND(totalPrice)}
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    <Link href="/checkout">
-                      <Button variant="primary" size="lg" fullWidth className="font-medium">
-                        Proceed to Checkout
-                      </Button>
-                    </Link>
-                    <Link href="/shop">
-                      <Button variant="secondary" size="lg" fullWidth className="font-medium">
-                        Continue Shopping
-                      </Button>
-                    </Link>
-                    <button
-                      onClick={clearCart}
-                      className="w-full px-4 py-3 text-sm text-error hover:text-error/80 transition-colors font-medium"
-                    >
-                      Clear Cart
-                    </button>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-border">
-                    <p className="text-xs text-muted text-center">
-                      Free shipping on orders over $100. Express shipping available.
-                    </p>
+                  <div className="flex justify-between text-body-sm">
+                    <span style={{ color: 'var(--fg-muted)' }}>Shipping</span>
+                    <span style={{ color: 'var(--fg-muted)' }}>Calculated at next step</span>
                   </div>
                 </div>
-              </FadeInUp>
+
+                <div className="flex justify-between items-baseline mb-8 pb-8" style={{ borderBottom: '1px solid var(--border)' }}>
+                  <span className="text-body-lg" style={{ color: 'var(--fg)' }}>Total</span>
+                  <span className="text-heading-2" style={{ color: 'var(--accent)' }}>
+                    {formatTND(totalPrice)}
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  <Link href="/checkout">
+                    <Button
+                      className="w-full py-4 text-overline"
+                      style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+                    >
+                      Proceed to Checkout
+                    </Button>
+                  </Link>
+                  <Link href="/shop">
+                    <Button
+                      className="w-full py-4 text-overline"
+                      style={{ backgroundColor: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)' }}
+                    >
+                      Continue Shopping
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Trust Signals */}
+                <div className="mt-8 pt-8 space-y-4" style={{ borderTop: '1px solid var(--border)' }}>
+                  <div className="flex items-center gap-3">
+                    <span style={{ color: 'var(--accent)' }}>✦</span>
+                    <span className="text-body-sm" style={{ color: 'var(--fg-muted)' }}>Secure Checkout</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span style={{ color: 'var(--accent)' }}>✦</span>
+                    <span className="text-body-sm" style={{ color: 'var(--fg-muted)' }}>Complimentary Returns</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={clearCart}
+                  className="w-full mt-6 py-3 text-overline transition-colors hover:opacity-70"
+                  style={{ color: 'var(--fg-muted)' }}
+                >
+                  Clear Bag
+                </button>
+              </div>
             </div>
           </div>
         </Container>
-      </Section>
-    </>
+      </section>
+    </main>
   )
 }
