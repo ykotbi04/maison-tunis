@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Container } from '@/components/layout/container'
 import { useMobileMenuOpen, useToggleMobileMenu, useToggleCartDrawer } from '@/lib/stores'
+import { useAuthSession } from '@/hooks/useAuthSession'
+import { signOut } from 'next-auth/react'
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: string
@@ -30,6 +32,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
     const mobileMenuOpen = useMobileMenuOpen()
     const toggleMobileMenu = useToggleMobileMenu()
     const toggleCartDrawer = useToggleCartDrawer()
+    const { isAuthenticated, isLoading } = useAuthSession()
     const router = useRouter()
 
     const navItems = [
@@ -144,26 +147,58 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                   <span className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full" />
                 </button>
 
-                {/* Account Icon */}
-                <button
-                  aria-label="Account"
-                  onClick={() => router.push('/login')}
-                  className="text-foreground hover:text-accent transition-colors duration-200 p-2"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                {/* Account */}
+                {isLoading ? (
+                  <div className="w-5 h-5 rounded-full bg-background-secondary animate-pulse" />
+                ) : isAuthenticated ? (
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/account"
+                      className="text-foreground hover:text-accent transition-colors duration-200 p-2"
+                      aria-label="Account"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    </Link>
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="hidden md:inline text-xs text-muted hover:text-accent transition-colors font-sans tracking-wide"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="text-foreground hover:text-accent transition-colors duration-200 p-2"
+                    aria-label="Sign in"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </Link>
+                )}
 
                 {/* Mobile Menu Toggle */}
                 <button

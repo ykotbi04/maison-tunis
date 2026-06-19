@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCart } from '@/hooks/useCart'
 import { useCheckout } from '@/hooks/useCheckout'
+import { useAuthSession } from '@/hooks/useAuthSession'
 import { FadeInUp } from '@/lib/animations'
 import { formatTND } from '@/lib/formatters'
 import { checkoutApi } from '@/lib/api'
@@ -16,8 +17,51 @@ import Link from 'next/link'
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart()
   const { step, formData, errors, touched, handleInputChange, handleFieldBlur, nextStep, prevStep, isValid } = useCheckout()
+  const { isAuthenticated, isLoading } = useAuthSession()
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  if (isLoading) {
+    return (
+      <Section variant="default" spacing="xl">
+        <Container>
+          <div className="text-center py-20">
+            <p className="text-muted">Loading...</p>
+          </div>
+        </Container>
+      </Section>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Section variant="default" spacing="xl">
+        <Container size="sm">
+          <div className="text-center py-20 space-y-6">
+            <div className="text-6xl text-accent">✦</div>
+            <h1 className="font-serif text-4xl text-foreground tracking-wider">
+              Sign In to Checkout
+            </h1>
+            <p className="text-muted max-w-md mx-auto">
+              Please sign in or create an account to complete your purchase.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/login?callbackUrl=/checkout">
+                <Button variant="primary" size="lg">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/register?callbackUrl=/checkout">
+                <Button variant="secondary" size="lg">
+                  Create Account
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </Section>
+    )
+  }
 
   if (items.length === 0 && step !== 'confirmation') {
     return (

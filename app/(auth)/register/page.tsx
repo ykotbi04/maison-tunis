@@ -6,13 +6,16 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Link } from '@/components/ui/link'
 import { FadeInUp } from '@/lib/animations'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import NextLink from 'next/link'
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/login'
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,12 +29,14 @@ export default function RegisterPage() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+    if (error) setError('')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match')
+      setError('Passwords do not match')
       return
     }
     setIsLoading(true)
@@ -47,13 +52,13 @@ export default function RegisterPage() {
       })
 
       if (!response.ok) {
-        const error = await response.json().catch(() => null)
-        throw new Error(error?.error || 'Registration failed')
+        const err = await response.json().catch(() => null)
+        throw new Error(err?.error || 'Registration failed')
       }
 
-      router.push('/login')
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Registration failed')
+      router.push(callbackUrl)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed')
     } finally {
       setIsLoading(false)
     }
@@ -133,6 +138,10 @@ export default function RegisterPage() {
                 </span>
               </label>
 
+              {error && (
+                <p className="text-sm text-error text-center">{error}</p>
+              )}
+
               <Button
                 type="submit"
                 variant="primary"
@@ -161,5 +170,13 @@ export default function RegisterPage() {
         </div>
       </Container>
     </Section>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   )
 }

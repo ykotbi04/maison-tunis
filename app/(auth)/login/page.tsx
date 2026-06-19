@@ -6,16 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Link } from '@/components/ui/link'
 import { FadeInUp } from '@/lib/animations'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useCartStore } from '@/lib/stores/cartStore'
 import { useWishlistStore } from '@/lib/stores/wishlistStore'
 import NextLink from 'next/link'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/shop'
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -26,11 +29,13 @@ export default function LoginPage() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+    if (error) setError('')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
     try {
       const guestCart = useCartStore.getState().items
       const guestWishlist = useWishlistStore.getState().items.map((item) => item.productId)
@@ -42,7 +47,8 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        throw new Error('Login failed')
+        setError('Invalid email or password')
+        return
       }
 
       const syncResponse = await fetch('/api/auth/sync', {
@@ -67,10 +73,10 @@ export default function LoginPage() {
         }
       }
 
-      router.push('/shop')
+      router.push(callbackUrl)
       router.refresh()
     } catch {
-      alert('Invalid email or password')
+      setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -125,6 +131,10 @@ export default function LoginPage() {
                 </Link>
               </div>
 
+              {error && (
+                <p className="text-sm text-error text-center">{error}</p>
+              )}
+
               <Button
                 type="submit"
                 variant="primary"
@@ -153,5 +163,13 @@ export default function LoginPage() {
         </div>
       </Container>
     </Section>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
