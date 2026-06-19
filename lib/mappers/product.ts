@@ -18,6 +18,7 @@ export function mapProduct(product: ProductWithCategory): Product {
     name: product.name,
     category: product.category.name,
     categorySlug: product.category.slug,
+    gender: product.gender,
     price: Number(product.price),
     description: product.description,
     longDescription: product.longDescription,

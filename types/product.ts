@@ -5,6 +5,7 @@ export interface Product {
   name: string
   category: string
   categorySlug: string
+  gender: string
   price: number // in TND
   description: string
   longDescription: string
