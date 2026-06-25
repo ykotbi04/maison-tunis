@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Container } from '@/components/layout/container'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { adminApi, type AdminProduct } from '@/lib/api'
@@ -69,18 +68,21 @@ export default function AdminProductsPage() {
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-serif text-3xl text-foreground tracking-wider">Products</h1>
-          <p className="text-sm text-muted mt-1">{total} products total</p>
+          <h1 className="text-2xl font-bold text-[var(--fg)] tracking-tight">Products</h1>
+          <p className="text-sm text-[var(--fg-muted)] mt-1">{total} products total</p>
         </div>
         <Link href="/admin/products/new">
-          <Button variant="primary" size="sm">+ New Product</Button>
+          <Button variant="primary" size="md">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            New Product
+          </Button>
         </Link>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
           <Input
@@ -93,7 +95,7 @@ export default function AdminProductsPage() {
         <select
           value={genderFilter}
           onChange={(e) => { setGenderFilter(e.target.value); setPage(1) }}
-          className="h-10 px-4 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+          className="h-11 px-4 bg-white border border-[var(--border)] rounded-xl text-sm text-[var(--fg)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
           aria-label="Filter by gender"
         >
           <option value="">All Genders</option>
@@ -104,7 +106,7 @@ export default function AdminProductsPage() {
         <select
           value={stockFilter}
           onChange={(e) => { setStockFilter(e.target.value); setPage(1) }}
-          className="h-10 px-4 bg-background-secondary border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+          className="h-11 px-4 bg-white border border-[var(--border)] rounded-xl text-sm text-[var(--fg)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
           aria-label="Filter by stock status"
         >
           <option value="">All Stock</option>
@@ -113,31 +115,39 @@ export default function AdminProductsPage() {
         </select>
       </div>
 
-      {/* Table */}
-      <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+      <div className="bg-white rounded-xl border border-[var(--border)] overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-sm text-muted">Loading...</div>
+          <div className="p-12 text-center">
+            <div className="w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-sm text-[var(--fg-muted)]">Loading products...</p>
+          </div>
         ) : products.length === 0 ? (
-          <div className="p-12 text-center text-sm text-muted">No products found</div>
+          <div className="p-12 text-center">
+            <svg className="w-10 h-10 text-[var(--fg-muted)] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+            </svg>
+            <p className="text-sm text-[var(--fg-muted)] mb-2">No products found</p>
+            <p className="text-xs text-[var(--fg-muted)]">Try adjusting your search or filters</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm" role="grid">
               <thead>
-                <tr className="border-b border-border">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Product</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Category</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Gender</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Price</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-muted uppercase tracking-wider">Actions</th>
+                <tr className="border-b border-[var(--border)] bg-[var(--bg-secondary)]">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider">Product</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider hidden sm:table-cell">Category</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider hidden md:table-cell">Gender</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider">Price</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider">Status</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-[var(--fg-muted)] uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-[var(--border)]">
                 {products.map((product) => (
-                  <tr key={product.id} className="hover:bg-background/50 transition-colors">
+                  <tr key={product.id} className="hover:bg-[var(--bg-secondary)] transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded bg-background overflow-hidden flex-shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-[var(--bg-muted)] overflow-hidden flex-shrink-0">
                           <Image
                             src={product.image}
                             alt={product.name}
@@ -147,37 +157,38 @@ export default function AdminProductsPage() {
                           />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-foreground truncate">{product.name}</p>
-                          <p className="text-xs text-muted">{product.sku}</p>
+                          <p className="font-medium text-[var(--fg)] truncate">{product.name}</p>
+                          <p className="text-xs text-[var(--fg-muted)]">{product.sku}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-foreground">{product.category}</td>
-                    <td className="px-4 py-3 text-foreground capitalize">{product.gender.toLowerCase()}</td>
-                    <td className="px-4 py-3 font-medium text-[var(--color-accent)]">{formatTND(product.price)}</td>
+                    <td className="px-4 py-3 text-[var(--fg-secondary)] hidden sm:table-cell">{product.category}</td>
+                    <td className="px-4 py-3 text-[var(--fg-secondary)] capitalize hidden md:table-cell">{product.gender.toLowerCase()}</td>
+                    <td className="px-4 py-3 font-semibold text-[var(--fg)]">{formatTND(product.price)}</td>
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-block text-[10px] font-medium px-2 py-0.5 rounded ${
+                        className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${
                           product.inStock
-                            ? 'bg-[var(--color-success)]/15 text-[var(--color-success)]'
-                            : 'bg-[var(--color-error)]/15 text-[var(--color-error)]'
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : 'bg-red-50 text-red-700'
                         }`}
                         role="status"
                       >
+                        <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} />
                         {product.inStock ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => router.push(`/admin/products/${product.id}/edit`)}
-                          className="text-xs text-muted hover:text-[var(--color-accent)] transition-colors px-2 py-1"
+                          className="text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--accent)] transition-colors px-2 py-1 rounded-lg hover:bg-[var(--accent)]/10"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => setDeleteId(product.id)}
-                          className="text-xs text-muted hover:text-[var(--color-error)] transition-colors px-2 py-1"
+                          className="text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--error)] transition-colors px-2 py-1 rounded-lg hover:bg-red-50"
                         >
                           Delete
                         </button>
@@ -190,24 +201,23 @@ export default function AdminProductsPage() {
           </div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="px-4 py-3 border-t border-border flex items-center justify-between">
-            <p className="text-xs text-muted">
+          <div className="px-4 py-3 border-t border-[var(--border)] flex items-center justify-between bg-[var(--bg-secondary)]">
+            <p className="text-xs text-[var(--fg-muted)]">
               Showing {((page - 1) * limit) + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex gap-2">
               <Button
-                variant="outline"
-                size="xs"
+                variant="secondary"
+                size="sm"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
               >
                 Prev
               </Button>
               <Button
-                variant="outline"
-                size="xs"
+                variant="secondary"
+                size="sm"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >
@@ -218,16 +228,25 @@ export default function AdminProductsPage() {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-background-secondary rounded-lg border border-border p-6 max-w-sm w-full space-y-4">
-            <h3 className="font-serif text-xl text-foreground">Delete Product</h3>
-            <p className="text-sm text-muted">
-              This action cannot be undone. The product will be permanently removed from your catalog.
+          <div className="bg-white rounded-xl border border-[var(--border)] p-6 max-w-sm w-full space-y-4 shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-[var(--error)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[var(--fg)]">Delete Product</h3>
+                <p className="text-xs text-[var(--fg-muted)]">This action cannot be undone</p>
+              </div>
+            </div>
+            <p className="text-sm text-[var(--fg-secondary)]">
+              The product will be permanently removed from your catalog.
             </p>
             <div className="flex gap-3 justify-end">
-              <Button variant="ghost" size="sm" onClick={() => setDeleteId(null)}>
+              <Button variant="secondary" size="sm" onClick={() => setDeleteId(null)}>
                 Cancel
               </Button>
               <Button

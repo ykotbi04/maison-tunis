@@ -33,3 +33,40 @@ tsconfig.tsbuildinfo
 *.sln
 *.sw?
 .DS_Store
+
+# Tool configs (API keys, dev-only)
+opencode.json
+stitch-tools.json
+
+# Lock file (use npm)
+pnpm-lock.yaml
+
+# Python scripts (PFE deliverables, not app code)
+*.py
+
+# PFE document files
+*.docx
+Maison_Tunis_PFE_Report.json
+Maison_Tunis_PFE_Report_Improved.json
+
+# Screenshot capture scripts
+capture*.js
+capture-*.js
+screenshot-pages.js
+create-diagrams.js
+render_diagrams.js
+
+# Screenshot directories
+hannibal/
+report-figures/
+
+# Audit/documentation files
+PROJECT_AUDIT.md
+AUDIT_REPORT.md
+PRODUCT-IMAGE-PROMPTS.md
+
+# Debug routes (remove in production)
+app/api/debug/
+
+# Token files
+token.txt

@@ -86,12 +86,10 @@ export const checkoutSchema = z.object({
     phone: z.string().min(1),
     address: z.string().min(1),
     city: z.string().min(1),
-    state: z.string().min(1),
     postalCode: z.string().min(1),
-    country: z.string().min(1),
   }),
   payment: z.object({
-    method: z.enum(['credit-card', 'paypal', 'bank-transfer']),
+    method: z.enum(['credit-card', 'bank-transfer']),
     cardNumber: z.string().optional(),
     cardExpiry: z.string().optional(),
     cardCvc: z.string().optional(),

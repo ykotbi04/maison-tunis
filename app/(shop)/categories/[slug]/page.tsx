@@ -65,7 +65,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <Breadcrumbs
               items={[
                 { label: 'Home', href: '/' },
-                { label: 'Shop', href: '/shop' },
+                { label: 'Collections', href: '/collections' },
                 { label: category.name },
               ]}
             />
@@ -132,7 +132,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           ) : (
             <div className="text-center py-12 space-y-4">
               <p className="text-2xl text-foreground">No products in this category yet</p>
-              <Link href="/shop" className="text-accent hover:text-accent-dark">
+               <Link href="/collections" className="text-accent hover:text-accent-dark">
                 Browse all products →
               </Link>
             </div>

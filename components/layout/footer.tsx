@@ -19,9 +19,9 @@ const Footer: React.FC = () => {
 
   const shopLinks: { label: string; href: string }[] = [
     { label: 'Collections', href: '/collections' },
-    { label: 'New Arrivals', href: '/shop' },
-    { label: 'Sale', href: '/shop' },
-    { label: 'Bestsellers', href: '/shop' },
+    { label: 'New Arrivals', href: '/collections' },
+    { label: 'Sale', href: '/collections' },
+    { label: 'Bestsellers', href: '/collections' },
   ]
 
   const supportLinks: { label: string; href: string }[] = [
@@ -45,32 +45,30 @@ const Footer: React.FC = () => {
   ]
 
   return (
-    <footer className="bg-background-secondary border-t border-border mt-16 md:mt-24">
+    <footer className="bg-white border-t border-[var(--border)] mt-16 md:mt-24">
       <Container className="py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 md:mb-12">
-          {/* Brand */}
           <div>
-            <h3 className="font-serif text-xl text-accent mb-4 tracking-wide">
+            <h3 className="text-lg font-bold text-[var(--fg)] mb-3 tracking-tight">
               Maison Tunis
             </h3>
-            <p className="text-sm text-muted leading-relaxed">
+            <p className="text-sm text-[var(--fg-muted)] leading-relaxed">
               Luxury Tunisian fashion house. Timeless elegance meets authentic craftsmanship.
             </p>
           </div>
 
-          {/* Shop */}
           <div>
-            <h4 className="font-sans font-semibold text-foreground mb-4 text-sm tracking-wide">
+            <h4 className="font-semibold text-[var(--fg)] mb-4 text-sm">
               Shop
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {shopLinks.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
                     variant="secondary"
                     size="sm"
-                    className="hover:text-accent"
+                    className="hover:text-[var(--accent)] transition-colors"
                   >
                     {label}
                   </Link>
@@ -79,19 +77,18 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
-            <h4 className="font-sans font-semibold text-foreground mb-4 text-sm tracking-wide">
+            <h4 className="font-semibold text-[var(--fg)] mb-4 text-sm">
               Support
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {supportLinks.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
                     variant="secondary"
                     size="sm"
-                    className="hover:text-accent"
+                    className="hover:text-[var(--accent)] transition-colors"
                   >
                     {label}
                   </Link>
@@ -100,19 +97,18 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Company */}
           <div>
-            <h4 className="font-sans font-semibold text-foreground mb-4 text-sm tracking-wide">
+            <h4 className="font-semibold text-[var(--fg)] mb-4 text-sm">
               Company
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {companyLinks.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
                     variant="secondary"
                     size="sm"
-                    className="hover:text-accent"
+                    className="hover:text-[var(--accent)] transition-colors"
                   >
                     {label}
                   </Link>
@@ -122,11 +118,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-border pt-8">
-          {/* Newsletter */}
+        <div className="border-t border-[var(--border)] pt-8">
           <div className="mb-8">
-            <h4 className="font-sans font-semibold text-foreground mb-3 text-sm tracking-wide">
+            <h4 className="font-semibold text-[var(--fg)] mb-3 text-sm">
               Subscribe to Our Newsletter
             </h4>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
@@ -135,20 +129,19 @@ const Footer: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 bg-background border border-border text-foreground placeholder:text-muted text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="flex-1 px-4 py-2.5 bg-white border border-[var(--border)] text-[var(--fg)] placeholder:text-[var(--fg-muted)] text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
               />
               <button
                 type="submit"
-                className="px-6 py-2 bg-accent text-accent-foreground font-medium text-sm tracking-wide hover:bg-accent-dark transition-colors duration-200"
+                className="px-6 py-2.5 bg-[var(--accent)] text-white font-semibold text-sm rounded-xl hover:bg-[var(--accent-hover)] transition-colors duration-150"
               >
                 {subscribed ? 'Subscribed!' : 'Subscribe'}
               </button>
             </form>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-border">
-            <p className="text-xs text-muted text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-[var(--border)]">
+            <p className="text-xs text-[var(--fg-muted)] text-center md:text-left">
               &copy; {currentYear} MAISON TUNIS. All rights reserved.
             </p>
             <div className="flex gap-6">

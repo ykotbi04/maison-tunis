@@ -8,12 +8,12 @@ import { useAuthSession } from '@/hooks/useAuthSession'
 import { accountApi, type CustomerOrder } from '@/lib/api'
 import { formatTND, formatDate } from '@/lib/formatters'
 
-const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  PENDING: { label: 'Pending', color: 'text-[var(--color-accent)]' },
-  PROCESSING: { label: 'Processing', color: 'text-blue-400' },
-  SHIPPED: { label: 'Shipped', color: 'text-purple-400' },
-  DELIVERED: { label: 'Delivered', color: 'text-[var(--color-success)]' },
-  CANCELLED: { label: 'Cancelled', color: 'text-[var(--color-error)]' },
+const STATUS_LABELS: Record<string, { label: string; bg: string; text: string; dot: string }> = {
+  PENDING: { label: 'Pending', bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' },
+  PROCESSING: { label: 'Processing', bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
+  SHIPPED: { label: 'Shipped', bg: 'bg-purple-50', text: 'text-purple-700', dot: 'bg-purple-500' },
+  DELIVERED: { label: 'Delivered', bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
+  CANCELLED: { label: 'Cancelled', bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
 }
 
 const STATUS_STEPS = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED']
@@ -23,8 +23,8 @@ function StatusProgress({ status }: { status: string }) {
   if (status === 'CANCELLED') {
     return (
       <div className="flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-[var(--color-error)]" />
-        <span className="text-xs text-[var(--color-error)]">Cancelled</span>
+        <div className="w-2 h-2 rounded-full bg-[var(--error)]" />
+        <span className="text-xs text-[var(--error)] font-medium">Cancelled</span>
       </div>
     )
   }
@@ -34,15 +34,15 @@ function StatusProgress({ status }: { status: string }) {
         <div key={step} className="flex items-center gap-1">
           <div
             className={`w-2 h-2 rounded-full transition-colors ${
-              i <= currentIdx ? 'bg-[var(--color-accent)]' : 'bg-border'
+              i <= currentIdx ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'
             }`}
           />
           {i < STATUS_STEPS.length - 1 && (
-            <div className={`w-4 h-0.5 ${i < currentIdx ? 'bg-[var(--color-accent)]' : 'bg-border'}`} />
+            <div className={`w-4 h-0.5 ${i < currentIdx ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'}`} />
           )}
         </div>
       ))}
-      <span className="text-xs text-muted ml-1">{STATUS_LABELS[status]?.label || status}</span>
+      <span className="text-xs text-[var(--fg-muted)] ml-1">{STATUS_LABELS[status]?.label || status}</span>
     </div>
   )
 }
@@ -79,10 +79,10 @@ export default function AccountOverviewPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-8 w-48 bg-background-secondary rounded animate-pulse" />
+        <div className="h-8 w-48 bg-[var(--bg-muted)] rounded-lg animate-pulse" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-24 bg-background-secondary rounded-lg animate-pulse" />
+            <div key={i} className="h-24 bg-white rounded-xl border border-[var(--border)] animate-pulse" />
           ))}
         </div>
       </div>
@@ -90,49 +90,47 @@ export default function AccountOverviewPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="font-serif text-3xl text-foreground tracking-wider">Welcome back</h1>
-        <p className="text-sm text-muted mt-1">{user?.name || 'Customer'}</p>
+        <h1 className="text-2xl font-bold text-[var(--fg)] tracking-tight">Welcome back</h1>
+        <p className="text-sm text-[var(--fg-muted)] mt-1">{user?.name || 'Customer'}</p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link href="/account/orders" className="bg-background-secondary rounded-lg border border-border p-5 hover:border-[var(--color-accent)]/30 transition-colors group">
-          <p className="text-xs text-muted uppercase tracking-wider mb-1">Orders</p>
-          <p className="font-serif text-2xl text-foreground">{orderCount}</p>
+        <Link href="/account/orders" className="bg-white rounded-xl border border-[var(--border)] p-5 hover:border-[var(--accent)]/30 hover:shadow-md transition-all duration-200 group">
+          <p className="text-xs font-medium text-[var(--fg-muted)] mb-1">Orders</p>
+          <p className="text-2xl font-bold text-[var(--fg)]">{orderCount}</p>
         </Link>
-        <Link href="/account/wishlist" className="bg-background-secondary rounded-lg border border-border p-5 hover:border-[var(--color-accent)]/30 transition-colors group">
-          <p className="text-xs text-muted uppercase tracking-wider mb-1">Wishlist</p>
-          <p className="font-serif text-2xl text-foreground">{wishlistCount}</p>
+        <Link href="/account/wishlist" className="bg-white rounded-xl border border-[var(--border)] p-5 hover:border-[var(--accent)]/30 hover:shadow-md transition-all duration-200 group">
+          <p className="text-xs font-medium text-[var(--fg-muted)] mb-1">Wishlist</p>
+          <p className="text-2xl font-bold text-[var(--fg)]">{wishlistCount}</p>
         </Link>
-        <Link href="/account/profile" className="bg-background-secondary rounded-lg border border-border p-5 hover:border-[var(--color-accent)]/30 transition-colors group">
-          <p className="text-xs text-muted uppercase tracking-wider mb-1">Profile</p>
-          <p className="text-sm text-foreground truncate">{user?.email}</p>
+        <Link href="/account/profile" className="bg-white rounded-xl border border-[var(--border)] p-5 hover:border-[var(--accent)]/30 hover:shadow-md transition-all duration-200 group">
+          <p className="text-xs font-medium text-[var(--fg-muted)] mb-1">Profile</p>
+          <p className="text-sm text-[var(--fg)] truncate">{user?.email}</p>
         </Link>
       </div>
 
-      {/* Recent Order */}
       {recentOrder ? (
-        <div className="bg-background-secondary rounded-lg border border-border p-6">
+        <div className="bg-white rounded-xl border border-[var(--border)] p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-serif text-lg text-foreground tracking-wide">Most Recent Order</h2>
-            <Link href={`/account/orders/${recentOrder.id}`} className="text-xs text-[var(--color-accent)] hover:underline">
+            <h2 className="text-sm font-semibold text-[var(--fg)]">Most Recent Order</h2>
+            <Link href={`/account/orders/${recentOrder.id}`} className="text-xs font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors">
               View Details
             </Link>
           </div>
 
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-muted">Order {recentOrder.shortId}</p>
-            <p className="text-xs text-muted">{formatDate(recentOrder.createdAt)}</p>
+            <p className="text-xs text-[var(--fg-muted)]">Order {recentOrder.shortId}</p>
+            <p className="text-xs text-[var(--fg-muted)]">{formatDate(recentOrder.createdAt)}</p>
           </div>
 
           <StatusProgress status={recentOrder.status} />
 
-          <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+          <div className="mt-4 pt-4 border-t border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-3">
               {recentOrder.items[0] && (
-                <div className="w-10 h-10 rounded bg-background overflow-hidden flex-shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-[var(--bg-muted)] overflow-hidden flex-shrink-0">
                   <Image
                     src={recentOrder.items[0].image}
                     alt={recentOrder.items[0].name}
@@ -143,19 +141,23 @@ export default function AccountOverviewPage() {
                 </div>
               )}
               <div>
-                <p className="text-sm text-foreground">{recentOrder.items.length} item{recentOrder.items.length !== 1 ? 's' : ''}</p>
-                <p className="text-xs text-muted">{recentOrder.items[0]?.name}</p>
+                <p className="text-sm text-[var(--fg)]">{recentOrder.items.length} item{recentOrder.items.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs text-[var(--fg-muted)]">{recentOrder.items[0]?.name}</p>
               </div>
             </div>
-            <p className="font-serif text-lg text-[var(--color-accent)]">{formatTND(recentOrder.total)}</p>
+            <p className="text-lg font-bold text-[var(--fg)]">{formatTND(recentOrder.total)}</p>
           </div>
         </div>
       ) : (
-        <div className="bg-background-secondary rounded-lg border border-border p-8 text-center">
-          <div className="text-4xl text-[var(--color-accent)]/30 mb-3">&#10022;</div>
-          <h2 className="font-serif text-xl text-foreground mb-2">No Orders Yet</h2>
-          <p className="text-sm text-muted mb-4">When you place an order, it will appear here.</p>
-          <Link href="/shop">
+        <div className="bg-white rounded-xl border border-[var(--border)] p-8 text-center">
+          <div className="w-12 h-12 bg-[var(--bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-3">
+            <svg className="w-6 h-6 text-[var(--fg-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
+            </svg>
+          </div>
+          <h2 className="text-base font-semibold text-[var(--fg)] mb-1">No Orders Yet</h2>
+          <p className="text-sm text-[var(--fg-muted)] mb-4">When you place an order, it will appear here.</p>
+           <Link href="/collections">
             <Button variant="primary" size="sm">Browse Collection</Button>
           </Link>
         </div>

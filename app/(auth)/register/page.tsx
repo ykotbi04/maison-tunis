@@ -67,104 +67,116 @@ function RegisterForm() {
   return (
     <Section variant="default" spacing="xl" className="min-h-screen">
       <Container size="sm">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto flex flex-col items-center justify-center min-h-[80vh]">
           <FadeInUp delay={0.1}>
-            <div className="text-center mb-12">
-              <h1 className="font-serif text-4xl text-foreground mb-2 tracking-widest">
-                Create Account
+            <div className="text-center mb-8">
+              <div className="w-12 h-12 bg-[var(--accent)] rounded-xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-white text-xl font-bold">M</span>
+              </div>
+              <h1 className="text-2xl font-bold text-[var(--fg)] tracking-tight">
+                Create account
               </h1>
-              <p className="text-muted">
-                Join MAISON TUNIS and discover luxury fashion
+              <p className="text-sm text-[var(--fg-muted)] mt-2">
+                Begin your MAISON TUNIS journey
               </p>
             </div>
           </FadeInUp>
 
           <FadeInUp delay={0.2}>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="w-full bg-white rounded-xl border border-[var(--border)] p-6 sm:p-8 shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    label="First name"
+                    name="firstName"
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <Input
+                    label="Last name"
+                    name="lastName"
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
                 <Input
-                  label="First Name"
-                  name="firstName"
-                  placeholder="John"
-                  value={formData.firstName}
+                  label="Email address"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
                   onChange={handleInputChange}
                   required
                 />
                 <Input
-                  label="Last Name"
-                  name="lastName"
-                  placeholder="Doe"
-                  value={formData.lastName}
+                  label="Password"
+                  type="password"
+                  name="password"
+                  placeholder="Create a password"
+                  value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
-              </div>
-              <Input
-                label="Email Address"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                label="Password"
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                label="Confirm Password"
-                type="password"
-                name="confirmPassword"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                required
-              />
-
-              <label className="flex items-start gap-3 text-sm">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 border border-border rounded mt-1"
+                <Input
+                  label="Confirm password"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
                   required
                 />
-                <span className="text-muted">
-                  I agree to the Terms of Service and Privacy Policy
-                </span>
-              </label>
 
-              {error && (
-                <p className="text-sm text-error text-center">{error}</p>
-              )}
+                <label className="flex items-start gap-3 text-sm cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-[var(--border)] text-[var(--accent)] focus:ring-[var(--accent)] mt-0.5"
+                    required
+                  />
+                  <span className="text-[var(--fg-secondary)]">
+                    I agree to the{' '}
+                    <Link href="/pages/terms" variant="secondary" size="sm" className="inline">
+                      Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link href="/pages/privacy" variant="secondary" size="sm" className="inline">
+                      Privacy Policy
+                    </Link>
+                  </span>
+                </label>
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                isLoading={isLoading}
-                className="font-medium tracking-wide"
-              >
-                Create Account
-              </Button>
-            </form>
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <p className="text-sm text-red-700 text-center">{error}</p>
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  isLoading={isLoading}
+                  className="mt-2"
+                >
+                  Create account
+                </Button>
+              </form>
+            </div>
           </FadeInUp>
 
           <FadeInUp delay={0.3}>
-            <div className="mt-8 pt-8 border-t border-border text-center">
-              <p className="text-muted text-sm mb-4">
-                Already have an account?
+            <div className="mt-6 text-center">
+              <p className="text-sm text-[var(--fg-muted)]">
+                Already have an account?{' '}
+                <NextLink href="/login" className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-medium">
+                  Sign in
+                </NextLink>
               </p>
-              <NextLink href="/login">
-                <Button variant="secondary" size="md" fullWidth className="font-medium">
-                  Sign In
-                </Button>
-              </NextLink>
             </div>
           </FadeInUp>
         </div>

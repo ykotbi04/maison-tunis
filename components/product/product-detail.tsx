@@ -54,25 +54,53 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Image Gallery */}
-        <div className="space-y-4">
-          <div className="relative aspect-square overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+        <div className="space-y-3">
+          <div
+            className="relative overflow-hidden"
+            style={{
+              aspectRatio: '4 / 5',
+              backgroundColor: 'var(--bg-secondary)',
+            }}
+          >
             <Image
               src={product.image}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-out hover:scale-105"
               priority
             />
             {product.isNew && (
-              <div className="absolute top-4 left-4 px-4 py-2 text-sm font-sans tracking-widest uppercase" style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}>
-                New
+              <div
+                className="absolute top-5 left-5"
+              >
+                <div
+                  className="text-overline px-3 py-1.5"
+                  style={{
+                    backgroundColor: 'var(--accent)',
+                    color: '#0C0A08',
+                    letterSpacing: '0.15em',
+                  }}
+                >
+                  New Arrival
+                </div>
               </div>
             )}
             {product.isLimited && (
-              <div className="absolute top-4 right-4 px-4 py-2 text-sm font-sans tracking-widest uppercase" style={{ backgroundColor: '#C9544D', color: '#FEFBF8' }}>
-                Limited #{product.limitedQty}
+              <div
+                className="absolute top-5 right-5"
+              >
+                <div
+                  className="text-overline px-3 py-1.5"
+                  style={{
+                    backgroundColor: '#C25450',
+                    color: '#FEFBF8',
+                    letterSpacing: '0.15em',
+                  }}
+                >
+                  Limited · {product.limitedQty} Remaining
+                </div>
               </div>
             )}
           </div>
@@ -80,7 +108,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Thumbnail Gallery */}
           <div className="grid grid-cols-4 gap-2">
             {product.images.map((image, idx) => (
-              <div key={idx} className="relative aspect-square cursor-pointer overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+              <div
+                key={idx}
+                className="relative cursor-pointer overflow-hidden transition-all duration-300"
+                style={{
+                  aspectRatio: '1 / 1',
+                  border: '1px solid var(--border)',
+                }}
+              >
                 <Image
                   src={image}
                   alt={`${product.name} view ${idx + 1}`}
@@ -97,62 +132,99 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Category */}
           <Link
             href={`/categories/${product.categorySlug}`}
-            className="text-overline hover:opacity-80 transition-opacity"
-            style={{ color: 'var(--accent)' }}
+            className="inline-block text-overline transition-colors duration-300 hover:opacity-70"
+            style={{ color: 'var(--accent)', letterSpacing: '0.2em' }}
           >
             {product.category}
           </Link>
 
           {/* Title & Price */}
-          <div className="space-y-3">
-            <h1 className="text-display-1 leading-tight" style={{ color: 'var(--fg)' }}>{product.name}</h1>
+          <div className="space-y-4">
+            <h1
+              className="text-display-1 leading-tight"
+              style={{
+                color: 'var(--fg)',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              {product.name}
+            </h1>
 
-            <div className="flex items-center gap-4">
-              <span className="text-price-lg" style={{ color: 'var(--accent)' }}>
+            <div className="flex items-baseline gap-3">
+              <span
+                className="text-price-lg"
+                style={{ color: 'var(--accent)' }}
+              >
                 {formatTND(product.price)}
               </span>
             </div>
 
             {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1">
+            <div className="flex items-center gap-3">
+              <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <span
                     key={i}
-                    style={{ color: i < Math.floor(product.rating) ? 'var(--accent)' : 'var(--fg-muted)' }}
+                    className="text-sm"
+                    style={{
+                      color: i < Math.floor(product.rating)
+                        ? 'var(--accent)'
+                        : 'var(--border)',
+                    }}
                   >
                     ★
                   </span>
                 ))}
               </div>
-              <span className="text-sm" style={{ color: 'var(--fg-muted)' }}>
-                ({product.reviews} reviews)
+              <span
+                className="text-body-sm"
+                style={{ color: 'var(--fg-muted)' }}
+              >
+                {product.rating.toFixed(1)} · {product.reviews} reviews
               </span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-body leading-relaxed" style={{ color: 'var(--fg-secondary)' }}>
+          <p
+            className="text-body leading-relaxed"
+            style={{ color: 'var(--fg-secondary)' }}
+          >
             {product.longDescription}
           </p>
+
+          {/* Divider */}
+          <div className="divider-luxury" />
 
           {/* Color Selection */}
           {product.colors.length > 1 && (
             <div className="space-y-3">
-              <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Color: {selectedColor}</label>
-              <div className="flex gap-3">
+              <label
+                className="text-overline block"
+                style={{ color: 'var(--fg-muted)', letterSpacing: '0.15em' }}
+              >
+                Color — {selectedColor}
+              </label>
+              <div className="flex gap-2">
                 {product.colors.map((color) => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
-                    className="px-4 py-2 transition-colors"
+                    className="relative px-5 py-2.5 text-body-sm transition-all duration-300"
                     style={{
                       border: `1px solid ${selectedColor === color ? 'var(--accent)' : 'var(--border)'}`,
-                      backgroundColor: selectedColor === color ? 'var(--accent)' + '10' : 'transparent',
-                      color: 'var(--fg)',
+                      backgroundColor: selectedColor === color ? 'color-mix(in srgb, var(--accent) 8%, transparent)' : 'transparent',
+                      color: selectedColor === color ? 'var(--fg)' : 'var(--fg-secondary)',
+                      letterSpacing: '0.05em',
                     }}
                   >
                     {color}
+                    {selectedColor === color && (
+                      <span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-px"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -162,20 +234,32 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Size Selection */}
           {product.sizes.length > 1 && (
             <div className="space-y-3">
-              <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Size: {selectedSize}</label>
-              <div className="flex gap-3 flex-wrap">
+              <label
+                className="text-overline block"
+                style={{ color: 'var(--fg-muted)', letterSpacing: '0.15em' }}
+              >
+                Size — {selectedSize}
+              </label>
+              <div className="flex gap-2 flex-wrap">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className="px-4 py-2 transition-colors"
+                    className="relative px-5 py-2.5 text-body-sm transition-all duration-300"
                     style={{
                       border: `1px solid ${selectedSize === size ? 'var(--accent)' : 'var(--border)'}`,
-                      backgroundColor: selectedSize === size ? 'var(--accent)' + '10' : 'transparent',
-                      color: 'var(--fg)',
+                      backgroundColor: selectedSize === size ? 'color-mix(in srgb, var(--accent) 8%, transparent)' : 'transparent',
+                      color: selectedSize === size ? 'var(--fg)' : 'var(--fg-secondary)',
+                      letterSpacing: '0.05em',
                     }}
                   >
                     {size}
+                    {selectedSize === size && (
+                      <span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-px"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -184,13 +268,24 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {/* Quantity */}
           <div className="space-y-3">
-            <label className="text-overline" style={{ color: 'var(--fg-muted)' }}>Quantity</label>
-            <div className="flex items-center gap-3 w-fit" style={{ border: '1px solid var(--border)' }}>
+            <label
+              className="text-overline block"
+              style={{ color: 'var(--fg-muted)', letterSpacing: '0.15em' }}
+            >
+              Quantity
+            </label>
+            <div
+              className="inline-flex items-center"
+              style={{
+                border: '1px solid var(--border)',
+                backgroundColor: 'transparent',
+              }}
+            >
               <button
                 onClick={decrease}
                 disabled={!canDecrease}
-                className="px-4 py-2 text-lg hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
-                style={{ color: 'var(--fg)' }}
+                className="w-12 h-12 flex items-center justify-center text-lg transition-all duration-300 hover:bg-[color-mix(in_srgb,var(--bg-secondary)_60%,transparent)] disabled:opacity-25 disabled:cursor-not-allowed"
+                style={{ color: 'var(--fg)', borderRight: '1px solid var(--border)' }}
                 aria-label="Decrease quantity"
               >
                 −
@@ -201,56 +296,128 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 onChange={(e) => setQuantityValue(parseInt(e.target.value) || 1)}
                 min="1"
                 max="20"
-                className="w-12 text-center bg-transparent border-0 focus:outline-none"
-                style={{ color: 'var(--fg)' }}
+                className="w-14 h-12 text-center bg-transparent border-0 focus:outline-none text-body-sm"
+                style={{ color: 'var(--fg)', letterSpacing: '0.05em' }}
                 aria-label="Quantity"
               />
               <button
                 onClick={increase}
                 disabled={!canIncrease}
-                className="px-4 py-2 text-lg hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
-                style={{ color: 'var(--fg)' }}
+                className="w-12 h-12 flex items-center justify-center text-lg transition-all duration-300 hover:bg-[color-mix(in_srgb,var(--bg-secondary)_60%,transparent)] disabled:opacity-25 disabled:cursor-not-allowed"
+                style={{ color: 'var(--fg)', borderLeft: '1px solid var(--border)' }}
                 aria-label="Increase quantity"
               >
                 +
               </button>
             </div>
-            <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>Maximum 20 per order</p>
+            <p
+              className="text-body-sm"
+              style={{ color: 'var(--fg-muted)', fontSize: '12px' }}
+            >
+              Maximum 20 per order
+            </p>
           </div>
 
           {/* Stock Status */}
-          <div className="p-4" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+          <div
+            className="px-5 py-4"
+            style={{
+              backgroundColor: 'color-mix(in srgb, var(--bg-secondary) 50%, transparent)',
+              border: '1px solid var(--border-light)',
+            }}
+          >
             {product.inStock ? (
-              <div className="space-y-1">
-                <p className="text-sm font-medium" style={{ color: '#6B9E7F' }}>✓ In Stock</p>
-                <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>
-                  Ships next business day
-                </p>
+              <div className="flex items-center gap-3">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: '#6B9E7F' }}
+                />
+                <div>
+                  <p
+                    className="text-body-sm font-medium"
+                    style={{ color: '#6B9E7F', letterSpacing: '0.02em' }}
+                  >
+                    In Stock — Ready to Ship
+                  </p>
+                  <p
+                    className="mt-0.5"
+                    style={{ color: 'var(--fg-muted)', fontSize: '12px' }}
+                  >
+                    Ships next business day
+                  </p>
+                </div>
               </div>
             ) : (
-              <p className="text-sm font-medium" style={{ color: '#C9544D' }}>Out of Stock</p>
+              <div className="flex items-center gap-3">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: '#C25450' }}
+                />
+                <p
+                  className="text-body-sm font-medium"
+                  style={{ color: '#C25450', letterSpacing: '0.02em' }}
+                >
+                  Currently Out of Stock
+                </p>
+              </div>
             )}
           </div>
 
           {/* Trust Signals */}
           {product.inStock && (
-            <div className="space-y-3 p-4" style={{ border: '1px solid var(--border)' }}>
+            <div
+              className="p-5 space-y-4"
+              style={{
+                border: '1px solid var(--border)',
+                backgroundColor: 'var(--card)',
+              }}
+            >
               <div className="flex items-start gap-3">
-                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <span
+                  className="mt-0.5 flex-shrink-0"
+                  style={{ color: 'var(--accent)', fontSize: '14px' }}
+                >
+                  ✦
+                </span>
                 <div>
-                  <p className="text-sm" style={{ color: 'var(--fg)' }}>Complimentary Global Shipping</p>
+                  <p
+                    className="text-body-sm"
+                    style={{ color: 'var(--fg)', letterSpacing: '0.01em' }}
+                  >
+                    Complimentary Global Shipping
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <span
+                  className="mt-0.5 flex-shrink-0"
+                  style={{ color: 'var(--accent)', fontSize: '14px' }}
+                >
+                  ✦
+                </span>
                 <div>
-                  <p className="text-sm" style={{ color: 'var(--fg)' }}>30-Day Returns</p>
+                  <p
+                    className="text-body-sm"
+                    style={{ color: 'var(--fg)', letterSpacing: '0.01em' }}
+                  >
+                    30-Day Returns &amp; Exchanges
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span style={{ color: 'var(--accent)' }}>✦</span>
+                <span
+                  className="mt-0.5 flex-shrink-0"
+                  style={{ color: 'var(--accent)', fontSize: '14px' }}
+                >
+                  ✦
+                </span>
                 <div>
-                  <p className="text-sm" style={{ color: 'var(--fg)' }}>Authenticity Certificate Included</p>
+                  <p
+                    className="text-body-sm"
+                    style={{ color: 'var(--fg)', letterSpacing: '0.01em' }}
+                  >
+                    Authenticity Certificate Included
+                  </p>
                 </div>
               </div>
             </div>
@@ -261,41 +428,91 @@ export function ProductDetail({ product }: ProductDetailProps) {
             ref={ctaButtonRef}
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full py-4 font-serif text-lg"
-            style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+            className="w-full py-5 font-serif text-lg transition-all duration-500"
+            style={{
+              backgroundColor: product.inStock ? 'var(--accent)' : 'var(--border)',
+              color: product.inStock ? '#0C0A08' : 'var(--fg-muted)',
+              letterSpacing: '0.04em',
+            }}
           >
             Add to Atelier Bag
           </Button>
 
           {/* Product Details - Expandable Sections */}
-          <div style={{ borderTop: '1px solid var(--border)' }} className="pt-6 space-y-4">
+          <div style={{ borderTop: '1px solid var(--border)' }} className="pt-6 space-y-0">
             <details className="group">
-              <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+              <summary
+                className="flex items-center justify-between cursor-pointer py-4 text-overline transition-colors duration-300 hover:opacity-70"
+                style={{
+                  color: 'var(--fg)',
+                  letterSpacing: '0.15em',
+                  listStyle: 'none',
+                }}
+              >
                 Material &amp; Care
-                <span className="transition-transform group-open:rotate-45">+</span>
+                <span
+                  className="transition-transform duration-300 group-open:rotate-45 text-lg"
+                  style={{ color: 'var(--fg-muted)' }}
+                >
+                  +
+                </span>
               </summary>
-              <div className="pb-4 space-y-2 text-body-sm" style={{ color: 'var(--fg-secondary)' }}>
-                <p><strong>Material:</strong> {product.material}</p>
-                <p><strong>Care:</strong> {product.care}</p>
+              <div
+                className="pb-5 space-y-3 text-body-sm"
+                style={{ color: 'var(--fg-secondary)' }}
+              >
+                <p>
+                  <strong style={{ color: 'var(--fg)' }}>Material:</strong> {product.material}
+                </p>
+                <p>
+                  <strong style={{ color: 'var(--fg)' }}>Care:</strong> {product.care}
+                </p>
               </div>
             </details>
 
             {product.heritage && (
               <details className="group">
-                <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+                <summary
+                  className="flex items-center justify-between cursor-pointer py-4 text-overline transition-colors duration-300 hover:opacity-70"
+                  style={{
+                    color: 'var(--fg)',
+                    letterSpacing: '0.15em',
+                    listStyle: 'none',
+                  }}
+                >
                   Heritage &amp; Craftsmanship
-                  <span className="transition-transform group-open:rotate-45">+</span>
+                  <span
+                    className="transition-transform duration-300 group-open:rotate-45 text-lg"
+                    style={{ color: 'var(--fg-muted)' }}
+                  >
+                    +
+                  </span>
                 </summary>
-                <div className="pb-4 text-body-sm" style={{ color: 'var(--fg-secondary)' }}>
+                <div
+                  className="pb-5 text-body-sm"
+                  style={{ color: 'var(--fg-secondary)' }}
+                >
                   <p>{product.heritage}</p>
                 </div>
               </details>
             )}
 
             <details className="group">
-              <summary className="flex items-center justify-between cursor-pointer py-3 text-overline" style={{ color: 'var(--fg)' }}>
+              <summary
+                className="flex items-center justify-between cursor-pointer py-4 text-overline transition-colors duration-300 hover:opacity-70"
+                style={{
+                  color: 'var(--fg)',
+                  letterSpacing: '0.15em',
+                  listStyle: 'none',
+                }}
+              >
                 SKU: {product.sku}
-                <span className="transition-transform group-open:rotate-45">+</span>
+                <span
+                  className="transition-transform duration-300 group-open:rotate-45 text-lg"
+                  style={{ color: 'var(--fg-muted)' }}
+                >
+                  +
+                </span>
               </summary>
             </details>
           </div>
@@ -304,14 +521,27 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Sticky Footer CTA - Mobile Only */}
       {showStickyButton && (
-        <div className="fixed bottom-0 left-0 right-0 lg:hidden p-4 z-40" style={{ backgroundColor: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+        <div
+          className="fixed bottom-0 left-0 right-0 lg:hidden p-4 z-40 transition-all duration-500"
+          style={{
+            backgroundColor: 'color-mix(in srgb, var(--bg) 85%, transparent)',
+            backdropFilter: 'blur(20px) saturate(1.8)',
+            WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+            borderTop: '1px solid var(--border)',
+            boxShadow: '0 -4px 24px -4px rgba(0,0,0,0.08)',
+          }}
+        >
           <Button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full py-4 font-serif text-lg disabled:opacity-50"
-            style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+            className="w-full py-5 font-serif text-lg disabled:opacity-50 transition-all duration-500"
+            style={{
+              backgroundColor: product.inStock ? 'var(--accent)' : 'var(--border)',
+              color: product.inStock ? '#0C0A08' : 'var(--fg-muted)',
+              letterSpacing: '0.04em',
+            }}
           >
-            {product.inStock ? `Add to Bag • ${formatTND(product.price)}` : 'Out of Stock'}
+            {product.inStock ? `Add to Bag · ${formatTND(product.price)}` : 'Out of Stock'}
           </Button>
         </div>
       )}

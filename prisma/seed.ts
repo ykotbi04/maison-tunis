@@ -264,34 +264,34 @@ async function main() {
   }
 
   console.log('Seeding users...')
-  const adminPassword = await bcrypt.hash('Admin123!', 12)
-  const customerPassword = await bcrypt.hash('Customer123!', 12)
+  const adminPassword = await bcrypt.hash('Hannibal08', 12)
+  const customerPassword = await bcrypt.hash('Mediterranean19', 12)
 
   await prismaClient.user.upsert({
-    where: { email: 'admin@maison-tunis.com' },
+    where: { email: 'youssefkotbi@gmail.com' },
     update: {
-      name: 'MAISON Admin',
+      name: 'Youssef Kotbi',
       passwordHash: adminPassword,
       role: 'ADMIN',
     },
     create: {
-      name: 'MAISON Admin',
-      email: 'admin@maison-tunis.com',
+      name: 'Youssef Kotbi',
+      email: 'youssefkotbi@gmail.com',
       passwordHash: adminPassword,
       role: 'ADMIN',
     },
   })
 
   await prismaClient.user.upsert({
-    where: { email: 'customer@maison-tunis.com' },
+    where: { email: 'nourhouda@outlook.com' },
     update: {
-      name: 'Sample Customer',
+      name: 'Nour Houda',
       passwordHash: customerPassword,
       role: 'CUSTOMER',
     },
     create: {
-      name: 'Sample Customer',
-      email: 'customer@maison-tunis.com',
+      name: 'Nour Houda',
+      email: 'nourhouda@outlook.com',
       passwordHash: customerPassword,
       role: 'CUSTOMER',
     },

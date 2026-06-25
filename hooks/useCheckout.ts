@@ -1,31 +1,31 @@
-// Checkout Hook - Checkout form and validation logic
-
 import { useState, useCallback } from 'react'
-import type { ShippingFormData, FormErrors, FormTouched, CheckoutStep } from '@/types/checkout'
-import { validateShippingForm, isFormValid } from '@/lib/validators'
+import type { ShippingFormData, PaymentFormData, FormErrors, FormTouched, CheckoutStep } from '@/types/checkout'
+import { validateShippingForm, validatePaymentForm, isFormValid } from '@/lib/validators'
 
 export function useCheckout() {
   const [step, setStep] = useState<CheckoutStep>('shipping')
-  const [formData, setFormData] = useState<ShippingFormData>({
+  const [shippingData, setShippingData] = useState<ShippingFormData>({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     address: '',
     city: '',
-    state: '',
     postalCode: '',
-    country: '',
+  })
+  const [paymentData, setPaymentData] = useState<PaymentFormData>({
+    method: 'credit-card',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvc: '',
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<FormTouched>({})
 
-  const handleInputChange = useCallback(
+  const handleShippingChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target
-      setFormData((prev) => ({ ...prev, [name]: value }))
-      
-      // Clear error for this field if it starts being corrected
+      setShippingData((prev) => ({ ...prev, [name]: value }))
       if (errors[name]) {
         setErrors((prev) => ({ ...prev, [name]: '' }))
       }
@@ -33,24 +33,48 @@ export function useCheckout() {
     [errors]
   )
 
+  const handlePaymentChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target
+      setPaymentData((prev) => ({ ...prev, [name]: value }))
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: '' }))
+      }
+    },
+    [errors]
+  )
+
+  const handlePaymentMethodChange = useCallback((method: 'credit-card' | 'bank-transfer') => {
+    setPaymentData((prev) => ({ ...prev, method }))
+  }, [])
+
   const handleFieldBlur = useCallback(
     (fieldName: string) => {
       setTouched((prev) => ({ ...prev, [fieldName]: true }))
-      // Validate the entire form on blur to catch cross-field dependencies
-      const validationErrors = validateShippingForm(formData)
-      setErrors((prev) => ({ ...prev, [fieldName]: validationErrors[fieldName] || '' }))
+      if (step === 'shipping') {
+        const validationErrors = validateShippingForm(shippingData)
+        setErrors((prev) => ({ ...prev, [fieldName]: validationErrors[fieldName] || '' }))
+      } else if (step === 'payment') {
+        const validationErrors = validatePaymentForm(paymentData)
+        setErrors((prev) => ({ ...prev, [fieldName]: validationErrors[fieldName] || '' }))
+      }
     },
-    [formData]
+    [shippingData, paymentData, step]
   )
 
   const validateCurrentStep = useCallback((): boolean => {
     if (step === 'shipping') {
-      const validationErrors = validateShippingForm(formData)
+      const validationErrors = validateShippingForm(shippingData)
+      setErrors(validationErrors)
+      return isFormValid(validationErrors)
+    }
+    if (step === 'payment') {
+      const validationErrors = validatePaymentForm(paymentData)
       setErrors(validationErrors)
       return isFormValid(validationErrors)
     }
     return true
-  }, [step, formData])
+  }, [step, shippingData, paymentData])
 
   const nextStep = useCallback(() => {
     if (validateCurrentStep()) {
@@ -59,6 +83,7 @@ export function useCheckout() {
         if (prev === 'payment') return 'confirmation'
         return prev
       })
+      setErrors({})
     }
   }, [validateCurrentStep])
 
@@ -68,20 +93,25 @@ export function useCheckout() {
       if (prev === 'confirmation') return 'payment'
       return prev
     })
+    setErrors({})
   }, [])
 
   const resetCheckout = useCallback(() => {
     setStep('shipping')
-    setFormData({
+    setShippingData({
       firstName: '',
       lastName: '',
       email: '',
       phone: '',
       address: '',
       city: '',
-      state: '',
       postalCode: '',
-      country: '',
+    })
+    setPaymentData({
+      method: 'credit-card',
+      cardNumber: '',
+      cardExpiry: '',
+      cardCvc: '',
     })
     setErrors({})
     setTouched({})
@@ -89,10 +119,13 @@ export function useCheckout() {
 
   return {
     step,
-    formData,
+    shippingData,
+    paymentData,
     errors,
     touched,
-    handleInputChange,
+    handleShippingChange,
+    handlePaymentChange,
+    handlePaymentMethodChange,
     handleFieldBlur,
     nextStep,
     prevStep,

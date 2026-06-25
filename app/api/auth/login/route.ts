@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { signIn } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import { apiError, handleApiError } from '@/lib/api-errors'
 import { loginSchema, cartSyncSchema, wishlistSyncSchema } from '@/lib/schemas/api'
@@ -25,16 +24,6 @@ export async function POST(request: NextRequest) {
 
     const valid = await bcrypt.compare(credentials.password, user.passwordHash)
     if (!valid) {
-      return apiError('Invalid email or password', 401)
-    }
-
-    const result = await signIn('credentials', {
-      email: credentials.email,
-      password: credentials.password,
-      redirect: false,
-    })
-
-    if (result?.error) {
       return apiError('Invalid email or password', 401)
     }
 

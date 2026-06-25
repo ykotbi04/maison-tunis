@@ -1,6 +1,6 @@
 // Centralized Validation Logic
 
-import type { ShippingFormData } from '@/types/checkout'
+import type { ShippingFormData, PaymentFormData } from '@/types/checkout'
 
 export interface ValidationResult {
   isValid: boolean
@@ -55,13 +55,6 @@ export const validateCity = (city: string): ValidationResult => {
   return { isValid: true, error: '' }
 }
 
-export const validateState = (state: string): ValidationResult => {
-  if (!state.trim()) {
-    return { isValid: false, error: 'State/Region is required' }
-  }
-  return { isValid: true, error: '' }
-}
-
 export const validatePostalCode = (postalCode: string): ValidationResult => {
   if (!postalCode.trim()) {
     return { isValid: false, error: 'Postal code is required' }
@@ -69,13 +62,6 @@ export const validatePostalCode = (postalCode: string): ValidationResult => {
   const cleanedPostalCode = postalCode.replace(/[\s\-]/g, '')
   if (!/^\d{4,}$/.test(cleanedPostalCode)) {
     return { isValid: false, error: 'Invalid postal code' }
-  }
-  return { isValid: true, error: '' }
-}
-
-export const validateCountry = (country: string): ValidationResult => {
-  if (!country.trim()) {
-    return { isValid: false, error: 'Country is required' }
   }
   return { isValid: true, error: '' }
 }
@@ -111,18 +97,40 @@ export const validateShippingForm = (data: ShippingFormData): Record<string, str
   const cityResult = validateCity(data.city)
   if (!cityResult.isValid) errors.city = cityResult.error
 
-  const stateResult = validateState(data.state)
-  if (!stateResult.isValid) errors.state = stateResult.error
-
   const postalCodeResult = validatePostalCode(data.postalCode)
   if (!postalCodeResult.isValid) errors.postalCode = postalCodeResult.error
 
-  const countryResult = validateCountry(data.country)
-  if (!countryResult.isValid) errors.country = countryResult.error
+  return errors
+}
+
+export const validatePaymentForm = (data: PaymentFormData): Record<string, string> => {
+  const errors: Record<string, string> = {}
+
+  if (data.method === 'credit-card') {
+    const cardNumberClean = data.cardNumber.replace(/\s/g, '')
+    if (!cardNumberClean) {
+      errors.cardNumber = 'Card number is required'
+    } else if (!/^\d{13,19}$/.test(cardNumberClean)) {
+      errors.cardNumber = 'Invalid card number'
+    }
+
+    if (!data.cardExpiry.trim()) {
+      errors.cardExpiry = 'Expiry date is required'
+    } else if (!/^\d{2}\/\d{2}$/.test(data.cardExpiry.trim())) {
+      errors.cardExpiry = 'Use MM/YY format'
+    }
+
+    const cvcClean = data.cardCvc.replace(/\s/g, '')
+    if (!cvcClean) {
+      errors.cardCvc = 'CVC is required'
+    } else if (!/^\d{3,4}$/.test(cvcClean)) {
+      errors.cardCvc = 'Invalid CVC'
+    }
+  }
 
   return errors
 }
 
 export const isFormValid = (errors: Record<string, string>): boolean => {
-  return Object.keys(errors).length === 0
+  return Object.values(errors).every((error) => !error)
 }

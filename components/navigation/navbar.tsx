@@ -8,7 +8,7 @@ import { Container } from '@/components/layout/container'
 import { useMobileMenuOpen, useToggleMobileMenu, useToggleCartDrawer } from '@/lib/stores'
 import { useAuthSession } from '@/hooks/useAuthSession'
 import { signOut } from 'next-auth/react'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
+
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   logo?: string
@@ -37,7 +37,6 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
     const router = useRouter()
 
     const navItems = [
-      { label: 'Shop', href: '/shop' },
       { label: 'Collections', href: '/collections' },
       { label: 'About', href: '/about' },
       { label: 'Contact', href: '/contact' },
@@ -48,42 +47,40 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
         <div
           ref={ref}
           className={cn(
-            'w-full border-b border-border transition-all duration-300',
-            sticky && 'sticky top-0 z-40 bg-background/95 backdrop-blur-sm',
-            'bg-background',
+            'w-full border-b border-[var(--border)] transition-all duration-200',
+            sticky && 'sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-xl',
+            'bg-[var(--bg)]',
             className
           )}
           {...props}
         >
           <Container>
-            <div className="flex items-center justify-between h-20">
-              {/* Logo */}
+            <div className="flex items-center justify-between h-16">
               <div className="flex-shrink-0">
                 <Link
                   href="/"
-                  className="font-serif text-xl tracking-widest text-foreground hover:text-accent transition-colors duration-200"
+                  className="text-lg font-bold tracking-tight text-[var(--fg)] hover:text-[var(--accent)] transition-colors duration-150"
                 >
                   {logo}
                 </Link>
               </div>
 
-              {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center gap-8">
+              <div className="hidden md:flex items-center gap-6">
                 {genderMenus.map((menu) => (
                   <div key={menu.basePath} className="relative group">
                     <Link
                       href={menu.basePath}
-                      className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
+                      className="text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150"
                     >
                       {menu.label}
                     </Link>
-                    <div className="absolute left-0 top-full pt-3 hidden group-hover:block min-w-[220px]">
-                      <div className="border border-border bg-background py-2">
+                    <div className="absolute left-0 top-full pt-3 hidden group-hover:block min-w-[200px]">
+                      <div className="bg-[var(--bg)] border border-[var(--border)] rounded-xl py-2 shadow-lg">
                         {collectionCategories.map((category) => (
                           <Link
                             key={`${menu.basePath}-${category.slug}`}
                             href={`${menu.basePath}/${category.slug}`}
-                            className="block px-4 py-2 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
+                            className="block px-4 py-2 text-sm text-[var(--fg-secondary)] hover:text-[var(--fg)] hover:bg-[var(--bg-secondary)] transition-colors duration-150"
                           >
                             {category.name}
                           </Link>
@@ -96,88 +93,51 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="font-sans text-sm text-foreground hover:text-accent transition-colors duration-200 tracking-wide"
+                    className="text-sm font-medium text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150"
                   >
                     {item.label}
                   </Link>
                 ))}
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center gap-3">
-                {/* Theme Toggle */}
-                <ThemeToggle />
-
-                {/* Search Icon */}
+              <div className="flex items-center gap-2">
                 <button
                   aria-label="Search"
-                  onClick={() => router.push('/shop')}
-                  className="text-foreground hover:text-accent transition-colors duration-200 p-2"
+                  onClick={() => router.push('/collections')}
+                  className="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150 p-2 rounded-lg hover:bg-[var(--bg-muted)]"
                 >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </button>
 
-                {/* Cart Icon */}
                 <button
                   aria-label="Cart"
                   onClick={toggleCartDrawer}
-                  className="text-foreground hover:text-accent transition-colors duration-200 p-2 relative"
+                  className="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150 p-2 rounded-lg hover:bg-[var(--bg-muted)] relative"
                 >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
-                  <span className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[var(--accent)] rounded-full" />
                 </button>
 
-                {/* Account */}
                 {isLoading ? (
-                  <div className="w-5 h-5 rounded-full bg-background-secondary animate-pulse" />
+                  <div className="w-8 h-8 rounded-full bg-[var(--bg-muted)] animate-pulse" />
                 ) : isAuthenticated ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <Link
                       href="/account"
-                      className="text-foreground hover:text-accent transition-colors duration-200 p-2"
+                      className="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150 p-2 rounded-lg hover:bg-[var(--bg-muted)]"
                       aria-label="Account"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </Link>
                     <button
                       onClick={() => signOut({ callbackUrl: '/' })}
-                      className="hidden md:inline text-xs text-muted hover:text-accent transition-colors font-sans tracking-wide"
+                      className="hidden md:inline text-xs text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors font-medium"
                     >
                       Sign Out
                     </button>
@@ -185,65 +145,38 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                 ) : (
                   <Link
                     href="/login"
-                    className="text-foreground hover:text-accent transition-colors duration-200 p-2"
+                    className="text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150 p-2 rounded-lg hover:bg-[var(--bg-muted)]"
                     aria-label="Sign in"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </Link>
                 )}
 
-                {/* Mobile Menu Toggle */}
                 <button
-                  className="md:hidden text-foreground hover:text-accent transition-colors duration-200 p-2"
+                  className="md:hidden text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150 p-2 rounded-lg hover:bg-[var(--bg-muted)]"
                   onClick={toggleMobileMenu}
                   aria-label="Toggle menu"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {mobileMenuOpen ? (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                     ) : (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
                     )}
                   </svg>
                 </button>
               </div>
             </div>
 
-            {/* Mobile Menu */}
             {mobileMenuOpen && (
-              <div className="md:hidden border-t border-border pb-4">
+              <div className="md:hidden border-t border-[var(--border)] pb-4">
                 {genderMenus.map((menu) => (
                   <div key={menu.basePath}>
                     <Link
                       href={menu.basePath}
-                      className="block py-3 px-0 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
+                      className="block py-3 text-sm font-medium text-[var(--fg)] hover:text-[var(--accent)] transition-colors duration-150"
                     >
                       {menu.label}
                     </Link>
@@ -251,7 +184,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                       <Link
                         key={`${menu.basePath}-mobile-${category.slug}`}
                         href={`${menu.basePath}/${category.slug}`}
-                        className="block py-2 pl-4 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
+                        className="block py-2 pl-4 text-sm text-[var(--fg-secondary)] hover:text-[var(--fg)] transition-colors duration-150"
                       >
                         {category.name}
                       </Link>
@@ -262,7 +195,7 @@ const Navbar = React.forwardRef<HTMLDivElement, NavbarProps>(
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block py-3 px-0 font-sans text-sm text-foreground hover:text-accent transition-colors duration-200"
+                    className="block py-3 text-sm font-medium text-[var(--fg)] hover:text-[var(--accent)] transition-colors duration-150"
                   >
                     {item.label}
                   </Link>

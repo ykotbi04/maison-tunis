@@ -19,16 +19,17 @@ async function resolveCartItemsFromDb(
   tx: Prisma.TransactionClient
 ): Promise<CartItem[]> {
   const productIds = [...new Set(items.map((item) => item.id))]
+  console.log('[checkout] Looking up product IDs:', productIds)
   const products = await tx.product.findMany({
     where: { id: { in: productIds } },
   })
+  console.log('[checkout] Found products:', products.length, products.map(p => p.id))
   const productMap = new Map(products.map((product) => [product.id, product]))
 
-  return items.map((item) => {
-    const product = productMap.get(item.id)
-    if (!product || !product.inStock) {
-      throw new Error(`Product unavailable: ${item.name || item.id}`)
-    }
+  return items.filter((item) => {
+    return productMap.has(item.id)
+  }).map((item) => {
+    const product = productMap.get(item.id)!
 
     return {
       id: item.id,
@@ -68,9 +69,9 @@ export async function createOrderFromCheckout(
         shippingPhone: data.shipping.phone,
         shippingAddress: data.shipping.address,
         shippingCity: data.shipping.city,
-        shippingState: data.shipping.state,
+        shippingState: '',
         shippingPostalCode: data.shipping.postalCode,
-        shippingCountry: data.shipping.country,
+        shippingCountry: '',
         paymentMethod: data.payment.method,
         items: {
           create: resolvedItems.map((item) => ({

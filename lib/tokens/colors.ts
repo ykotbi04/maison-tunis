@@ -1,109 +1,108 @@
 // MAISON TUNIS - Color System
-// Premium dark luxury palette with warm bronze accents
+// Professional SaaS palette with clean blue accents
 
 export const colors = {
   // === Backgrounds ===
   background: {
-    DEFAULT: '#0C0A08',      // Primary dark background
-    secondary: '#14110E',    // Secondary dark background
-    tertiary: '#1A1815',     // Tertiary dark background
+    DEFAULT: '#FFFFFF',
+    secondary: '#F8FAFC',
+    tertiary: '#F1F5F9',
   },
 
   // === Foregrounds ===
   foreground: {
-    DEFAULT: '#F5F0E8',      // Primary text
-    secondary: '#EDE8E0',    // Secondary text
-    muted: '#A9A09B',        // Muted text
-    disabled: '#6B6259',     // Disabled text
+    DEFAULT: '#0F172A',
+    secondary: '#475569',
+    muted: '#94A3B8',
+    disabled: '#CBD5E1',
   },
 
-  // === Primary Accent (Bronze/Gold) ===
-  // WCAG AA compliant: 4.8:1 contrast ratio on dark background
+  // === Primary Accent (Blue) ===
   accent: {
-    DEFAULT: '#D8B57F',      // Primary accent (improved contrast)
-    hover: '#B8945F',        // Hover state (darker)
-    active: '#986A3F',       // Active state (much darker)
-    light: '#E8C5A0',        // Light variant
-    foreground: '#0C0A08',    // Text on accent
+    DEFAULT: '#2563EB',
+    hover: '#1D4ED8',
+    active: '#1E40AF',
+    light: '#DBEAFE',
+    foreground: '#FFFFFF',
   },
 
   // === Supporting Colors ===
   bronze: {
-    DEFAULT: '#D8B57F',
-    light: '#E8C5A0',
-    dark: '#A67C52',
+    DEFAULT: '#2563EB',
+    light: '#DBEAFE',
+    dark: '#1E40AF',
   },
 
   rose: {
-    DEFAULT: '#B8956A',
-    light: '#D4B89A',
-    dark: '#9A7A54',
+    DEFAULT: '#E11D48',
+    light: '#FEE2E2',
+    dark: '#BE123C',
   },
 
   terracotta: {
-    DEFAULT: '#B85C38',
-    light: '#D47A5A',
-    dark: '#964A2A',
+    DEFAULT: '#EA580C',
+    light: '#FFF7ED',
+    dark: '#C2410C',
   },
 
   stone: {
-    DEFAULT: '#9D9080',
-    light: '#B8ACA0',
-    dark: '#7A6F63',
+    DEFAULT: '#64748B',
+    light: '#94A3B8',
+    dark: '#475569',
   },
 
   sage: {
-    DEFAULT: '#8B9D83',
-    light: '#A5B59E',
-    dark: '#6F7F68',
+    DEFAULT: '#22C55E',
+    light: '#DCFCE7',
+    dark: '#16A34A',
   },
 
   slate: {
-    DEFAULT: '#6B7280',
-    light: '#8B92A0',
-    dark: '#4B5260',
+    DEFAULT: '#64748B',
+    light: '#94A3B8',
+    dark: '#475569',
   },
 
   // === Neutrals ===
-  cream: '#F5F0E8',
-  ivory: '#EDE8E0',
-  white: '#FEFBF8',
+  cream: '#F8FAFC',
+  ivory: '#F1F5F9',
+  white: '#FFFFFF',
 
   // === Borders ===
   border: {
-    DEFAULT: '#2A2620',      // Default border
-    light: '#3A3530',        // Light border
-    lighter: '#4A4540',      // Lighter border
-    accent: '#D4A574',       // Accent border
+    DEFAULT: '#E2E8F0',
+    light: '#F1F5F9',
+    lighter: '#F8FAFC',
+    accent: '#2563EB',
   },
 
   // === Semantic Colors ===
   success: {
-    DEFAULT: '#6B9E7F',
-    light: '#8BB89F',
-    dark: '#4B7E5F',
-    foreground: '#FEFBF8',
+    DEFAULT: '#22C55E',
+    light: '#DCFCE7',
+    dark: '#16A34A',
+    foreground: '#FFFFFF',
   },
 
   error: {
-    DEFAULT: '#C9544D',
-    light: '#E9746D',
-    dark: '#A9342D',
-    foreground: '#FEFBF8',
+    DEFAULT: '#EF4444',
+    light: '#FEF2F2',
+    dark: '#DC2626',
+    foreground: '#FFFFFF',
   },
 
   warning: {
-    DEFAULT: '#D8B57F',
-    light: '#E8C5A0',
-    dark: '#A67C52',
-    foreground: '#0C0A08',
+    DEFAULT: '#F59E0B',
+    light: '#FFFBEB',
+    dark: '#D97706',
+    foreground: '#FFFFFF',
   },
 
   info: {
-    DEFAULT: '#7BA3C0',
-    light: '#9BBBE0',
-    dark: '#5B83A0',
-    foreground: '#FEFBF8',
+    DEFAULT: '#3B82F6',
+    light: '#EFF6FF',
+    dark: '#2563EB',
+    foreground: '#FFFFFF',
   },
 } as const
 

@@ -5,16 +5,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const inputVariants = cva(
-  'w-full px-4 py-2 rounded-md font-sans text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed',
+  'w-full px-4 font-sans text-sm transition-all duration-150 focus-visible:outline-none disabled:opacity-40 disabled:cursor-not-allowed placeholder:text-[var(--fg-muted)]',
   {
     variants: {
       variant: {
-        default: 'bg-background-secondary border border-border text-foreground placeholder:text-muted focus:border-accent',
-        outline: 'bg-transparent border-2 border-border text-foreground placeholder:text-muted focus:border-accent',
+        default:
+          'bg-white border border-[var(--border)] text-[var(--fg)] focus:border-[var(--accent)] focus:ring-0 focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]',
+        outline:
+          'bg-transparent border-2 border-[var(--border)] text-[var(--fg)] focus:border-[var(--accent)] focus:ring-0',
       },
       size: {
-        sm: 'h-8 text-xs px-3',
-        md: 'h-10 text-sm px-4',
+        sm: 'h-9 text-xs px-3',
+        md: 'h-11 text-sm px-4',
         lg: 'h-12 text-base px-4',
       },
     },
@@ -50,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-foreground mb-2 tracking-wide">
+          <label className="block text-sm font-medium text-[var(--fg)] mb-1.5">
             {label}
           </label>
         )}
@@ -59,15 +61,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           className={cn(
             inputVariants({ variant, size, className }),
-            error && 'border-error focus:ring-error focus:border-error'
+            error && 'border-[var(--error)] focus:border-[var(--error)] focus:shadow-[0_0_0_3px_rgba(239,68,68,0.1)]'
           )}
           {...props}
         />
         {error && (
-          <p className="mt-1 text-sm text-error font-medium">{error}</p>
+          <p className="mt-1.5 text-xs text-[var(--error)] font-medium">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-muted">{helperText}</p>
+          <p className="mt-1.5 text-xs text-[var(--fg-muted)]">{helperText}</p>
         )}
       </div>
     )

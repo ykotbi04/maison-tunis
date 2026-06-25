@@ -160,8 +160,7 @@ export default function AccountOrderDetailPage() {
         <p className="text-sm text-foreground">
           {order.shipping.firstName} {order.shipping.lastName}<br />
           {order.shipping.address}<br />
-          {order.shipping.city}, {order.shipping.state} {order.shipping.postalCode}<br />
-          {order.shipping.country}
+          {order.shipping.city} {order.shipping.postalCode}<br />
         </p>
         <p className="text-xs text-muted mt-2">{order.shipping.email} &middot; {order.shipping.phone}</p>
       </div>

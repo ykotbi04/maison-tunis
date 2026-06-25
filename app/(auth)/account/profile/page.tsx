@@ -74,24 +74,23 @@ export default function AccountProfilePage() {
   }
 
   return (
-    <div className="space-y-8 max-w-lg">
+    <div className="space-y-6 max-w-lg">
       <div>
-        <h1 className="font-serif text-3xl text-foreground tracking-wider">Profile</h1>
-        <p className="text-sm text-muted mt-1">Manage your account information</p>
+        <h1 className="text-2xl font-bold text-[var(--fg)] tracking-tight">Profile</h1>
+        <p className="text-sm text-[var(--fg-muted)] mt-1">Manage your account information</p>
       </div>
 
-      {/* Profile Form */}
-      <div className="bg-background-secondary rounded-lg border border-border p-6 space-y-4">
-        <h2 className="font-serif text-lg text-foreground tracking-wide">Account Details</h2>
+      <div className="bg-white rounded-xl border border-[var(--border)] p-6 space-y-4">
+        <h2 className="text-base font-semibold text-[var(--fg)]">Account Details</h2>
 
         {saveMsg && (
-          <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg p-3">
-            <p className="text-sm text-[var(--color-success)]">{saveMsg}</p>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+            <p className="text-sm text-emerald-700">{saveMsg}</p>
           </div>
         )}
         {saveError && (
-          <div className="bg-[var(--color-error)]/10 border border-[var(--color-error)]/20 rounded-lg p-3">
-            <p className="text-sm text-[var(--color-error)]">{saveError}</p>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <p className="text-sm text-red-700">{saveError}</p>
           </div>
         )}
 
@@ -112,25 +111,24 @@ export default function AccountProfilePage() {
             aria-required="true"
           />
           <div className="flex justify-end">
-            <Button variant="primary" size="sm" type="submit" isLoading={saving}>
+            <Button variant="primary" size="md" type="submit" isLoading={saving}>
               Save Changes
             </Button>
           </div>
         </form>
       </div>
 
-      {/* Password Form */}
-      <div className="bg-background-secondary rounded-lg border border-border p-6 space-y-4">
-        <h2 className="font-serif text-lg text-foreground tracking-wide">Change Password</h2>
+      <div className="bg-white rounded-xl border border-[var(--border)] p-6 space-y-4">
+        <h2 className="text-base font-semibold text-[var(--fg)]">Change Password</h2>
 
         {pwMsg && (
-          <div className="bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 rounded-lg p-3">
-            <p className="text-sm text-[var(--color-success)]">{pwMsg}</p>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+            <p className="text-sm text-emerald-700">{pwMsg}</p>
           </div>
         )}
         {pwError && (
-          <div className="bg-[var(--color-error)]/10 border border-[var(--color-error)]/20 rounded-lg p-3">
-            <p className="text-sm text-[var(--color-error)]">{pwError}</p>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <p className="text-sm text-red-700">{pwError}</p>
           </div>
         )}
 
@@ -161,7 +159,7 @@ export default function AccountProfilePage() {
             aria-required="true"
           />
           <div className="flex justify-end">
-            <Button variant="primary" size="sm" type="submit" isLoading={changingPw}>
+            <Button variant="primary" size="md" type="submit" isLoading={changingPw}>
               Change Password
             </Button>
           </div>

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return Response.json({ cart, wishlist })
+    return Response.json({ cart, wishlist, user: { role: session.user.role } })
   } catch (error) {
     return handleApiError(error)
   }

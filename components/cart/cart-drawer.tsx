@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useCart } from '@/hooks/useCart'
 import { useCartDrawerOpen, useSetCartDrawerOpen } from '@/lib/stores'
 import { Button } from '@/components/ui/button'
@@ -21,27 +22,36 @@ const CartDrawer = () => {
       {/* Overlay */}
       {cartDrawerOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300"
           onClick={handleClose}
         />
       )}
 
       {/* Drawer */}
       <div
-        className={`fixed right-0 top-0 h-screen w-full max-w-md z-50 transition-transform duration-300 flex flex-col ${cartDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
-        style={{ backgroundColor: 'var(--bg)', borderLeft: '1px solid var(--border)' }}
+        className={`fixed right-0 top-0 h-screen w-full max-w-md z-50 transition-transform duration-500 flex flex-col ${cartDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{
+          backgroundColor: 'var(--bg)',
+          borderLeft: '1px solid var(--border)',
+          transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid var(--border)' }}>
-          <h2 className="text-heading-2" style={{ color: 'var(--fg)' }}>Cart</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="font-serif text-2xl" style={{ color: 'var(--fg)' }}>Your Bag</h2>
+            <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-foreground)' }}>
+              {items.length}
+            </span>
+          </div>
           <button
             onClick={handleClose}
             style={{ color: 'var(--fg)' }}
-            className="hover:opacity-70 transition-opacity"
+            className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--bg-secondary)] transition-colors duration-200"
             aria-label="Close cart"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -60,9 +70,12 @@ const CartDrawer = () => {
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-              <p className="text-body-sm mb-2" style={{ color: 'var(--fg-muted)' }}>Your cart is empty</p>
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                <span className="text-3xl opacity-30" style={{ color: 'var(--accent)' }}>&#10022;</span>
+              </div>
+              <p className="text-body-sm font-medium mb-1" style={{ color: 'var(--fg)' }}>Your bag is empty</p>
               <p className="text-body-sm" style={{ color: 'var(--fg-muted)' }}>
-                Add items to get started
+                Discover our luxury collections
               </p>
             </div>
           ) : (
@@ -70,41 +83,51 @@ const CartDrawer = () => {
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 pb-4"
+                  className="flex gap-4 py-5"
                   style={{ borderBottom: '1px solid var(--border)' }}
                 >
                   {/* Image */}
                   <div
-                    className="w-20 h-20 flex-shrink-0 flex items-center justify-center"
+                    className="w-20 h-24 flex-shrink-0 flex items-center justify-center overflow-hidden"
                     style={{ backgroundColor: 'var(--bg-secondary)' }}
                   >
-                    <span className="text-xl" style={{ color: 'var(--accent)', opacity: 0.3 }}>◆</span>
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={80}
+                        height={96}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-xl opacity-30" style={{ color: 'var(--accent)' }}>&#10022;</span>
+                    )}
                   </div>
 
                   {/* Details */}
-                  <div className="flex-1">
-                    <h3 className="text-body-sm font-medium mb-1" style={{ color: 'var(--fg)' }}>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-serif text-base mb-1 truncate" style={{ color: 'var(--fg)' }}>
                       {item.name}
                     </h3>
-                    <p className="text-body-sm mb-3" style={{ color: 'var(--fg-muted)' }}>
+                    <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
                       {formatTND(item.price * item.quantity)}
                     </p>
 
                     {/* Quantity Control */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 w-fit">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-6 h-6 flex items-center justify-center text-xs transition-opacity hover:opacity-70"
+                        className="w-8 h-8 flex items-center justify-center text-xs transition-colors duration-200 hover:bg-[var(--bg-secondary)]"
                         style={{ border: '1px solid var(--border)', color: 'var(--fg)' }}
                       >
-                        −
+                        &minus;
                       </button>
-                      <span className="w-6 text-center text-body-sm" style={{ color: 'var(--fg)' }}>
+                      <span className="w-10 h-8 flex items-center justify-center text-xs" style={{ color: 'var(--fg)' }}>
                         {item.quantity}
                       </span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-6 h-6 flex items-center justify-center text-xs transition-opacity hover:opacity-70"
+                        className="w-8 h-8 flex items-center justify-center text-xs transition-colors duration-200 hover:bg-[var(--bg-secondary)]"
                         style={{ border: '1px solid var(--border)', color: 'var(--fg)' }}
                       >
                         +
@@ -115,12 +138,12 @@ const CartDrawer = () => {
                   {/* Remove */}
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="transition-opacity hover:opacity-70"
+                    className="transition-opacity hover:opacity-70 self-start"
                     style={{ color: 'var(--fg-muted)' }}
                     aria-label="Remove item"
                   >
                     <svg
-                      className="w-5 h-5"
+                      className="w-4 h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -144,10 +167,10 @@ const CartDrawer = () => {
           <div className="p-6 space-y-4" style={{ borderTop: '1px solid var(--border)' }}>
             {/* Total */}
             <div className="flex justify-between items-baseline">
-              <span className="text-body-sm" style={{ color: 'var(--fg)' }}>
-                Subtotal:
+              <span className="text-sm" style={{ color: 'var(--fg)' }}>
+                Subtotal
               </span>
-              <span className="text-heading-2" style={{ color: 'var(--accent)' }}>
+              <span className="font-serif text-2xl font-light" style={{ color: 'var(--accent)' }}>
                 {formatTND(totalPrice)}
               </span>
             </div>
@@ -155,16 +178,15 @@ const CartDrawer = () => {
             {/* Buttons */}
             <Link href="/checkout">
               <Button
-                className="w-full py-4 text-overline"
-                style={{ backgroundColor: 'var(--accent)', color: '#0C0A08' }}
+                className="w-full py-4 text-xs tracking-[0.2em] uppercase"
               >
                 Checkout
               </Button>
             </Link>
-            <Link href="/shop">
+            <Link href="/collections">
               <Button
-                className="w-full py-4 text-overline"
-                style={{ backgroundColor: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)' }}
+                variant="secondary"
+                className="w-full py-4 text-xs tracking-[0.2em] uppercase"
               >
                 Continue Shopping
               </Button>

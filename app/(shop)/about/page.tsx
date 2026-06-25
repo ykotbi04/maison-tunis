@@ -102,7 +102,7 @@ export default function AboutPage() {
               Explore our latest designs and discover the artistry of MAISON TUNIS
             </p>
             <a
-              href="/shop"
+              href="/collections"
               className="inline-block px-8 py-3 bg-accent hover:bg-accent-dark text-accent-foreground font-serif text-base transition-colors"
             >
               Discover Collections

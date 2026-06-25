@@ -5,57 +5,33 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 font-sans font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'inline-flex items-center justify-center gap-2 font-sans font-semibold text-sm transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]',
   {
     variants: {
       variant: {
-        // Primary: solid gold button
         primary:
-          'bg-accent text-accent-foreground hover:bg-accent-dark active:scale-95 border border-accent',
-        
-        // Secondary: outline style
+          'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] active:bg-[var(--accent-active)] shadow-sm hover:shadow-md',
         secondary:
-          'bg-transparent border-2 border-accent text-accent hover:bg-accent/10 active:bg-accent/20',
-        
-        // Tertiary: minimal style
+          'bg-white border border-[#CBD5E1] text-[var(--fg)] hover:bg-[var(--bg-secondary)] active:bg-[var(--bg-muted)]',
         tertiary:
-          'bg-transparent text-foreground hover:text-accent active:text-accent-dark',
-        
-        // Outline: border only
+          'bg-transparent text-[var(--fg)] hover:text-[var(--accent)] active:text-[var(--accent-active)]',
         outline:
-          'border border-border text-foreground hover:border-accent hover:text-accent',
-        
-        // Ghost: no background
+          'border border-[var(--border)] text-[var(--fg)] hover:border-[var(--accent)] hover:text-[var(--accent)]',
         ghost:
-          'bg-transparent text-foreground hover:bg-background-secondary',
-        
-        // Destructive: error styling
+          'bg-transparent text-[var(--fg-secondary)] hover:bg-[var(--bg-muted)] hover:text-[var(--fg)]',
         destructive:
-          'bg-error text-white hover:bg-error/90 active:scale-95',
-        
-        // Success: success styling
+          'bg-[var(--error)] text-white hover:bg-[#DC2626] active:bg-[#B91C1C] shadow-sm',
         success:
-          'bg-success text-white hover:bg-success/90 active:scale-95',
+          'bg-[var(--success)] text-white hover:bg-[#16A34A] active:bg-[#15803D] shadow-sm',
       },
       size: {
-        // Extra small
-        xs: 'px-2 py-1 text-xs h-7',
-        
-        // Small
-        sm: 'px-3 py-1.5 text-sm h-8',
-        
-        // Medium (default)
-        md: 'px-4 py-2 text-sm h-10',
-        
-        // Large
-        lg: 'px-6 py-3 text-base h-12',
-        
-        // Extra large
-        xl: 'px-8 py-4 text-lg h-14',
-        
-        // Icon button
-        icon: 'w-10 h-10 p-0',
-        'icon-sm': 'w-8 h-8 p-0',
+        xs: 'px-3 text-xs h-7',
+        sm: 'px-4 text-xs h-9',
+        md: 'px-5 text-sm h-11',
+        lg: 'px-6 text-sm h-11',
+        xl: 'px-8 text-base h-12',
+        icon: 'w-11 h-11 p-0',
+        'icon-sm': 'w-9 h-9 p-0',
         'icon-lg': 'w-12 h-12 p-0',
       },
       fullWidth: {

@@ -4,7 +4,7 @@ import { apiError, handleApiError } from '@/lib/api-errors'
 import { getOrderById } from '@/lib/db/orders'
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

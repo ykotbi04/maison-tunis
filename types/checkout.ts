@@ -8,16 +8,14 @@ export interface ShippingFormData {
   phone: string
   address: string
   city: string
-  state: string
   postalCode: string
-  country: string
 }
 
 export interface PaymentFormData {
-  method: 'credit-card' | 'paypal' | 'bank-transfer'
-  cardNumber?: string
-  cardExpiry?: string
-  cardCvc?: string
+  method: 'credit-card' | 'bank-transfer'
+  cardNumber: string
+  cardExpiry: string
+  cardCvc: string
 }
 
 export interface CheckoutFormData extends ShippingFormData, PaymentFormData {}

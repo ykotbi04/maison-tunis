@@ -5,6 +5,8 @@ import { checkoutSchema } from '@/lib/schemas/api'
 import { createOrderFromCheckout } from '@/lib/db/orders'
 import { getUserCart } from '@/lib/db/cart'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth()
@@ -22,7 +24,12 @@ export async function POST(request: NextRequest) {
 
     const order = await createOrderFromCheckout(session.user.id, {
       shipping: data.shipping,
-      payment: data.payment,
+      payment: {
+        method: data.payment.method,
+        cardNumber: data.payment.cardNumber ?? '',
+        cardExpiry: data.payment.cardExpiry ?? '',
+        cardCvc: data.payment.cardCvc ?? '',
+      },
       items,
     })
 
