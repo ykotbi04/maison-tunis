@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
   try {
     const baseUrl = req.nextUrl.origin
     const sessionRes = await fetch(`${baseUrl}/api/auth/session`, {
-      headers: { cookie: `authjs.session-token=${sessionCookie}` },
+      headers: { cookie: req.headers.get('cookie') || '' },
     })
     const session = await sessionRes.json()
 
