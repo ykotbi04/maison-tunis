@@ -7,6 +7,8 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { Container } from '@/components/layout/container'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 interface ProductPageProps {
   params: Promise<{
     id: string

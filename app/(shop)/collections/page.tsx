@@ -4,6 +4,8 @@ import { getAllCategories } from '@/lib/db/categories'
 import { Container } from '@/components/layout/container'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Collections | MAISON TUNIS',
   description: 'Explore our curated collections - from evening wear and day wear to heritage pieces and limited editions.',

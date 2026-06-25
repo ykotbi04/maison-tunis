@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { GenderCollectionPage } from '@/lib/shop/gender-collection-page'
 import { getCategoryBySlug } from '@/lib/db/categories'
 
+export const dynamic = 'force-dynamic'
+
 interface WomenCategoryPageProps {
   params: Promise<{ categorySlug: string }>
 }

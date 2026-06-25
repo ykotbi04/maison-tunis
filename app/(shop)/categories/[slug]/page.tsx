@@ -9,6 +9,8 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { ProductCard } from '@/components/product/product-card'
 import { formatTND } from '@/lib/formatters'
 
+export const dynamic = 'force-dynamic'
+
 interface CategoryPageProps {
   params: Promise<{
     slug: string
